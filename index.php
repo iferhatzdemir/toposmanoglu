@@ -7,6 +7,108 @@ define("SINIF","admin/class/");
 include_once(DATA."baglanti.php");
 define("SITE",$siteurl);
 include_once(SAYFA."seo.php");
+
+if (!function_exists('ozgida_generate_intro_video_sources')) {
+    function ozgida_generate_intro_video_sources($url)
+    {
+        $result = [
+            'embed' => '',
+            'autoplay' => '',
+        ];
+
+        $url = trim((string) $url);
+        if ($url === '') {
+            return $result;
+        }
+
+        $parsedUrl = parse_url($url);
+        if ($parsedUrl === false) {
+            $result['embed'] = $url;
+            $result['autoplay'] = $url;
+            return $result;
+        }
+
+        $host = strtolower($parsedUrl['host'] ?? '');
+        $path = $parsedUrl['path'] ?? '';
+        $queryParams = [];
+
+        if (!empty($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $queryParams);
+        }
+
+        $videoId = '';
+
+        if (strpos($host, 'youtu.be') !== false) {
+            $videoId = trim($path, '/');
+        } elseif (strpos($host, 'youtube.com') !== false || strpos($host, 'youtube-nocookie.com') !== false) {
+            if (strpos($path, '/embed/') === 0) {
+                $videoId = trim(substr($path, strlen('/embed/')), '/');
+            } elseif (!empty($queryParams['v'])) {
+                $videoId = $queryParams['v'];
+            }
+        }
+
+        $startTime = '';
+
+        if (!empty($queryParams['start'])) {
+            $startTime = preg_replace('/[^0-9]/', '', $queryParams['start']);
+        } elseif (!empty($queryParams['t'])) {
+            $timeString = $queryParams['t'];
+            $timeTotal = 0;
+
+            if (preg_match('/(\d+)h/', $timeString, $matches)) {
+                $timeTotal += (int) $matches[1] * 3600;
+            }
+
+            if (preg_match('/(\d+)m/', $timeString, $matches)) {
+                $timeTotal += (int) $matches[1] * 60;
+            }
+
+            if (preg_match('/(\d+)s/', $timeString, $matches)) {
+                $timeTotal += (int) $matches[1];
+            }
+
+            if ($timeTotal > 0) {
+                $startTime = (string) $timeTotal;
+            } else {
+                $startTime = preg_replace('/[^0-9]/', '', $timeString);
+            }
+        }
+
+        if ($videoId === '') {
+            $result['embed'] = $url;
+            $result['autoplay'] = $url;
+            return $result;
+        }
+
+        $embedBase = 'https://www.youtube.com/embed/' . $videoId;
+
+        $result['embed'] = $embedBase;
+        if ($startTime !== '') {
+            $result['embed'] .= '?start=' . $startTime;
+        }
+
+        $autoplayParams = [
+            'autoplay' => '1',
+            'mute' => '1',
+            'rel' => '0',
+            'showinfo' => '0',
+        ];
+
+        if ($startTime !== '') {
+            $autoplayParams['start'] = $startTime;
+        }
+
+        $result['autoplay'] = $embedBase . '?' . http_build_query($autoplayParams);
+
+        return $result;
+    }
+}
+
+$introVideoUrl = isset($introVideoUrl) && $introVideoUrl ? $introVideoUrl : 'https://www.youtube.com/watch?v=_sI_Ps7JSEk';
+$introVideoSources = ozgida_generate_intro_video_sources($introVideoUrl);
+$introVideoEmbedUrl = $introVideoSources['embed'] !== '' ? $introVideoSources['embed'] : $introVideoUrl;
+$introVideoEmbedAutoplay = $introVideoSources['autoplay'] !== '' ? $introVideoSources['autoplay'] : $introVideoEmbedUrl;
 ?>
 <!doctype html>
 <html class="no-js" lang="zxx" dir="ltr">
@@ -140,7 +242,7 @@ include_once(SAYFA."seo.php");
     <!--==============================
         Intro Video Modal
     ============================== -->
-    <div id="introVideoModal" class="video-modal" aria-hidden="true">
+    <div id="introVideoModal" class="video-modal" aria-hidden="true" data-default-video="<?=htmlspecialchars($introVideoEmbedAutoplay, ENT_QUOTES, 'UTF-8')?>">
         <div class="video-modal__overlay" data-video-modal-close></div>
         <div class="video-modal__content" role="dialog" aria-modal="true" aria-label="<?=$sitebaslik?> Tanıtım Videosu">
             <button class="video-modal__close" type="button" data-video-modal-close aria-label="Videoyu kapat">
@@ -152,7 +254,7 @@ include_once(SAYFA."seo.php");
             </div>
             <div class="video-modal__body">
                 <div class="video-modal__media">
-                    <iframe data-src="https://www.youtube.com/embed/_sI_Ps7JSEk?autoplay=1&amp;mute=1&amp;rel=0&amp;showinfo=0" title="<?=$sitebaslik?> Tanıtım Videosu" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe data-src="<?=htmlspecialchars($introVideoEmbedAutoplay, ENT_QUOTES, 'UTF-8')?>" title="<?=$sitebaslik?> Tanıtım Videosu" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <p class="video-modal__description">Organik ürünlerle hazırlanan menümüzü tanıtım videomuzla keşfedin ve çiftlikten sofraya uzanan hikâyemize ortak olun.</p>
             </div>

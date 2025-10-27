@@ -552,13 +552,22 @@
     <!--==============================
     Video Area
     ==============================-->
+    <?php
+    if (empty($introVideoUrl)) {
+        $introVideoUrl = 'https://www.youtube.com/watch?v=_sI_Ps7JSEk';
+    }
+
+    if (empty($introVideoEmbedAutoplay)) {
+        $introVideoEmbedAutoplay = 'https://www.youtube.com/embed/_sI_Ps7JSEk?autoplay=1&mute=1&rel=0&showinfo=0';
+    }
+    ?>
     <section class=" sec-bg6">
         <div class="container">
             <div class="row gx-xl-0 gy-30">
                 <div class="col-lg-6 col-xl-7">
                     <div class="video-box">
                         <img src="assets/img/video/video-1-1.jpg" alt="Video image">
-                        <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video" data-intro-video-open="true"><i class="fas fa-play"></i></a>
+                        <a href="<?=htmlspecialchars($introVideoUrl, ENT_QUOTES, 'UTF-8')?>" class="play-btn style2 popup-video" data-intro-video-open="true" data-intro-video-src="<?=htmlspecialchars($introVideoEmbedAutoplay, ENT_QUOTES, 'UTF-8')?>"><i class="fas fa-play"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-xl-5">
