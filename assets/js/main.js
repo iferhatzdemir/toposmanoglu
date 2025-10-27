@@ -4,6 +4,206 @@
   var $introVideoModal = $('#introVideoModal');
   var $preloader = $('.preloader');
   var introVideoDisplayed = false;
+  var defaultVideoSource = '';
+  var currentVideoSource = '';
+
+  function parseIntroVideoStart(value) {
+    if (!value) {
+      return '';
+    }
+
+    if (/^\d+$/.test(value)) {
+      return value;
+    }
+
+    var totalSeconds = 0;
+    var hourMatch = /([0-9]+)h/.exec(value);
+    var minuteMatch = /([0-9]+)m/.exec(value);
+    var secondMatch = /([0-9]+)s/.exec(value);
+
+    if (hourMatch) {
+      totalSeconds += parseInt(hourMatch[1], 10) * 3600;
+    }
+
+    if (minuteMatch) {
+      totalSeconds += parseInt(minuteMatch[1], 10) * 60;
+    }
+
+    if (secondMatch) {
+      totalSeconds += parseInt(secondMatch[1], 10);
+    }
+
+    if (totalSeconds > 0) {
+      return String(totalSeconds);
+    }
+
+    var numeric = value.replace(/[^0-9]/g, '');
+    return numeric;
+  }
+
+  function resolveIntroVideoSource(rawSource) {
+    if (typeof rawSource !== 'string') {
+      return '';
+    }
+
+    var trimmed = rawSource.trim();
+
+    if (!trimmed) {
+      return '';
+    }
+
+    if (typeof URL === 'function' && typeof URLSearchParams === 'function') {
+      try {
+        var url = new URL(trimmed, window.location.href);
+        var hostname = url.hostname.replace(/^www\./, '');
+        var params = new URLSearchParams(url.search);
+        var startTime = '';
+
+        if (params.has('start')) {
+          startTime = params.get('start');
+        } else if (params.has('t')) {
+          startTime = params.get('t');
+        } else if (url.hash && url.hash.indexOf('t=') > -1) {
+          startTime = url.hash.split('t=')[1];
+        }
+
+        startTime = parseIntroVideoStart(startTime);
+
+        if (hostname.indexOf('youtube.com') !== -1 || hostname.indexOf('youtu.be') !== -1 || hostname.indexOf('youtube-nocookie.com') !== -1) {
+          var videoId = '';
+
+          if (hostname.indexOf('youtu.be') !== -1) {
+            videoId = url.pathname.replace('/', '');
+          } else if (url.pathname.indexOf('/embed/') === 0) {
+            videoId = url.pathname.split('/embed/')[1];
+          } else if (params.has('v')) {
+            videoId = params.get('v');
+          }
+
+          videoId = videoId ? videoId.replace(/[^a-zA-Z0-9_-]/g, '') : '';
+
+          if (videoId) {
+            var embedBase = 'https://www.youtube.com/embed/' + videoId;
+            var embedParams = new URLSearchParams();
+            embedParams.set('autoplay', '1');
+            embedParams.set('mute', '1');
+            embedParams.set('rel', '0');
+            embedParams.set('showinfo', '0');
+
+            if (startTime) {
+              embedParams.set('start', startTime);
+            }
+
+            return embedBase + '?' + embedParams.toString();
+          }
+        }
+
+        params.set('autoplay', '1');
+        params.set('mute', '1');
+
+        if (!params.has('rel')) {
+          params.set('rel', '0');
+        }
+
+        if (!params.has('showinfo')) {
+          params.set('showinfo', '0');
+        }
+
+        url.search = params.toString();
+        return url.toString();
+      } catch (error) {
+        // fall through to manual parsing
+      }
+    }
+
+    var fallbackMatch = trimmed.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{6,})/);
+
+    if (fallbackMatch && fallbackMatch[1]) {
+      var baseEmbed = 'https://www.youtube.com/embed/' + fallbackMatch[1];
+      var startMatch = trimmed.match(/[?&](?:start|t)=([^&]+)/);
+      var startValue = startMatch && startMatch[1] ? parseIntroVideoStart(startMatch[1]) : '';
+      var queryParts = ['autoplay=1', 'mute=1', 'rel=0', 'showinfo=0'];
+
+      if (startValue) {
+        queryParts.push('start=' + startValue);
+      }
+
+      return baseEmbed + '?' + queryParts.join('&');
+    }
+
+    return trimmed;
+  }
+
+  function setIntroVideoSource(rawSource) {
+    if (!$introVideoModal.length) {
+      return '';
+    }
+
+    var resolvedSource = resolveIntroVideoSource(rawSource);
+
+    if (!resolvedSource) {
+      return '';
+    }
+
+    var $iframe = $introVideoModal.find('iframe');
+
+    if (!$iframe.length) {
+      return '';
+    }
+
+    $iframe.data('src', resolvedSource);
+    $iframe.attr('data-src', resolvedSource);
+
+    if ($introVideoModal.hasClass('is-visible')) {
+      var activeSrc = $iframe.attr('src');
+      if (activeSrc !== resolvedSource) {
+        $iframe.attr('src', resolvedSource);
+      }
+    }
+
+    currentVideoSource = resolvedSource;
+    return resolvedSource;
+  }
+
+  function getIntroVideoTriggerSource($trigger) {
+    if (!$trigger || !$trigger.length) {
+      return '';
+    }
+
+    var source = $trigger.data('introVideoSrc');
+
+    if (typeof source === 'undefined') {
+      source = $trigger.data('videoSrc');
+    }
+
+    if (typeof source === 'undefined') {
+      source = $trigger.attr('data-video-src');
+    }
+
+    if (typeof source === 'undefined') {
+      source = $trigger.attr('href');
+    }
+
+    return typeof source === 'string' ? source : '';
+  }
+
+  if ($introVideoModal.length) {
+    defaultVideoSource = $introVideoModal.data('defaultVideo') || '';
+
+    if (!defaultVideoSource) {
+      var $firstIntroTrigger = $('[data-intro-video-open]').first();
+      if ($firstIntroTrigger.length) {
+        defaultVideoSource = getIntroVideoTriggerSource($firstIntroTrigger);
+      }
+    }
+
+    if (defaultVideoSource) {
+      var resolvedDefaultSource = setIntroVideoSource(defaultVideoSource);
+      if (resolvedDefaultSource) {
+        defaultVideoSource = resolvedDefaultSource;
+      }
+    }
+  }
 
   function showIntroVideoModal(forceOpen) {
     if (!$introVideoModal.length) {
@@ -24,6 +224,20 @@
 
     setTimeout(function () {
       var $iframe = $introVideoModal.find('iframe');
+      if (!$iframe.length) {
+        return;
+      }
+
+      var targetSrc = $iframe.data('src');
+
+      if (!targetSrc && currentVideoSource) {
+        targetSrc = setIntroVideoSource(currentVideoSource);
+      }
+
+      if (!targetSrc && defaultVideoSource) {
+        targetSrc = setIntroVideoSource(defaultVideoSource);
+      }
+
       var targetSrc = $iframe.data('src');
       var currentSrc = $iframe.attr('src');
 
@@ -79,6 +293,16 @@
     $('[data-intro-video-open]').on('click', function (e) {
       e.preventDefault();
       e.stopImmediatePropagation();
+
+      var requestedSource = getIntroVideoTriggerSource($(this));
+
+      if (requestedSource) {
+        var resolvedRequestedSource = setIntroVideoSource(requestedSource);
+        if (resolvedRequestedSource && !defaultVideoSource) {
+          defaultVideoSource = resolvedRequestedSource;
+        }
+      }
+
       showIntroVideoModal(true);
     });
 
@@ -146,6 +370,265 @@
       })
     });
   };
+
+
+  var ozgidaSliderRegistry = [];
+  var ozgidaSliderRegistryBound = false;
+
+  function initOzgidaHeroSlider() {
+    var $sliders = $('[data-ozgida-slider]');
+
+    if (!$sliders.length) {
+      return;
+    }
+
+    $sliders.each(function () {
+      var $slider = $(this);
+
+      if ($slider.data('ozgidaSliderInit')) {
+        return;
+      }
+
+      $slider.data('ozgidaSliderInit', true);
+
+      var $slides = $slider.find('.ozgida-slide');
+      var total = $slides.length;
+
+      if (total <= 1) {
+        $slider.removeAttr('tabindex role aria-roledescription aria-live aria-label');
+        $slides.attr('aria-hidden', 'false');
+        return;
+      }
+
+      var $dots = $slider.find('[data-ozgida-slider-dot]');
+      var autoplayDelay = parseInt($slider.attr('data-ozgida-autoplay'), 10);
+
+      if (isNaN(autoplayDelay) || autoplayDelay < 0) {
+        autoplayDelay = 5000;
+      }
+
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        autoplayDelay = 0;
+      }
+
+      var $activeSlide = $slides.filter('.active').first();
+      var current = $slides.index($activeSlide);
+
+      if (current < 0) {
+        current = 0;
+      }
+
+      $slides.removeClass('active').attr('aria-hidden', 'true').eq(current).addClass('active').attr('aria-hidden', 'false');
+
+      if ($dots.length) {
+        $dots.removeClass('active').attr('aria-current', null)
+          .filter('[data-ozgida-slider-dot="' + current + '"]').addClass('active').attr('aria-current', 'true');
+      }
+
+      var autoplayTimer = null;
+      var touchStartX = 0;
+
+      function stopAutoplay() {
+        if (autoplayTimer) {
+          clearInterval(autoplayTimer);
+          autoplayTimer = null;
+        }
+      }
+
+      function restartAutoplay() {
+        if (autoplayDelay <= 0) {
+          stopAutoplay();
+          return;
+        }
+
+        stopAutoplay();
+        autoplayTimer = window.setInterval(function () {
+          showSlide(current + 1, true);
+        }, autoplayDelay);
+      }
+
+      function showSlide(targetIndex, skipRestart) {
+        if (!total) {
+          return;
+        }
+
+        var normalized = ((targetIndex % total) + total) % total;
+
+        if (normalized === current) {
+          if (!skipRestart) {
+            restartAutoplay();
+          }
+          return;
+        }
+
+        $slides.removeClass('active').attr('aria-hidden', 'true').eq(normalized).addClass('active').attr('aria-hidden', 'false');
+
+        if ($dots.length) {
+          $dots.removeClass('active').attr('aria-current', null)
+            .filter('[data-ozgida-slider-dot="' + normalized + '"]').addClass('active').attr('aria-current', 'true');
+        }
+
+        var $content = $slides.eq(normalized).find('.ozgida-slide-inner');
+        if ($content.length) {
+          $content.css('animation', 'none');
+          var raf = window.requestAnimationFrame || function (callback) {
+            return window.setTimeout(callback, 16);
+          };
+          raf(function () {
+            $content.css('animation', '');
+          });
+        }
+
+        current = normalized;
+
+        if (!skipRestart) {
+          restartAutoplay();
+        }
+      }
+
+      function goTo(index) {
+        stopAutoplay();
+        showSlide(index);
+      }
+
+      function next() {
+        goTo(current + 1);
+      }
+
+      function prev() {
+        goTo(current - 1);
+      }
+
+      var $prev = $slider.find('[data-ozgida-slider-prev]');
+      var $next = $slider.find('[data-ozgida-slider-next]');
+
+      if ($prev.length) {
+        $prev.on('click', function (event) {
+          event.preventDefault();
+          prev();
+        });
+      }
+
+      if ($next.length) {
+        $next.on('click', function (event) {
+          event.preventDefault();
+          next();
+        });
+      }
+
+      if ($dots.length) {
+        $dots.each(function () {
+          var $dot = $(this);
+          var dotIndex = parseInt($dot.attr('data-ozgida-slider-dot'), 10);
+
+          if (isNaN(dotIndex)) {
+            return;
+          }
+
+          $dot.on('click', function (event) {
+            event.preventDefault();
+            goTo(dotIndex);
+          });
+        });
+      }
+
+      $slider.on('mouseenter', function () {
+        stopAutoplay();
+      });
+
+      $slider.on('mouseleave', function () {
+        restartAutoplay();
+      });
+
+      $slider.on('touchstart', function (event) {
+        if (!event.originalEvent || !event.originalEvent.changedTouches || !event.originalEvent.changedTouches.length) {
+          return;
+        }
+
+        touchStartX = event.originalEvent.changedTouches[0].screenX;
+        stopAutoplay();
+      });
+
+      $slider.on('touchend', function (event) {
+        if (!event.originalEvent || !event.originalEvent.changedTouches || !event.originalEvent.changedTouches.length) {
+          restartAutoplay();
+          return;
+        }
+
+        var touchEndX = event.originalEvent.changedTouches[0].screenX;
+        var diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > 40) {
+          if (diff > 0) {
+            next();
+          } else {
+            prev();
+          }
+        } else {
+          restartAutoplay();
+        }
+      });
+
+      $slider.on('keydown', function (event) {
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          prev();
+        } else if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          next();
+        } else if (event.key === 'Escape') {
+          stopAutoplay();
+        }
+      });
+
+      restartAutoplay();
+
+      var controls = {
+        next: function () {
+          next();
+        },
+        prev: function () {
+          prev();
+        },
+        goTo: function (index) {
+          if (typeof index === 'number') {
+            goTo(index);
+          }
+        },
+        stopAutoplay: stopAutoplay,
+        startAutoplay: restartAutoplay
+      };
+
+      $slider.data('ozgidaSliderControl', controls);
+
+      ozgidaSliderRegistry.push(controls);
+
+      if (typeof window !== 'undefined') {
+        window.ozgidaSliders = window.ozgidaSliders || [];
+        window.ozgidaSliders.push(controls);
+        window.ozgidaSlider = controls;
+      }
+
+      if (!ozgidaSliderRegistryBound) {
+        $(window).on('beforeunload.ozgidaSlider', function () {
+          ozgidaSliderRegistry.forEach(function (sliderControl) {
+            if (sliderControl && typeof sliderControl.stopAutoplay === 'function') {
+              sliderControl.stopAutoplay();
+            }
+          });
+        });
+        ozgidaSliderRegistryBound = true;
+      }
+    });
+  }
+
+  $(function () {
+    initOzgidaHeroSlider();
+  });
+
+
+
+  /*---------- 03. Mobile Menu Active ----------*/
 
 
 

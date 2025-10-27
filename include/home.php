@@ -187,6 +187,13 @@
         border: 2px solid white;
         cursor: pointer;
         transition: all 0.3s ease;
+        padding: 0;
+        line-height: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        appearance: none;
+        -webkit-appearance: none;
     }
 
     .ozgida-dot:hover {
@@ -198,6 +205,16 @@
         background: #F43F5E;
         width: 36px;
         border-radius: 8px;
+    }
+
+    .ozgida-dot:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.85);
+        outline-offset: 2px;
+    }
+
+    .ozgida-hero-slider:focus-visible {
+        outline: 3px solid rgba(244, 63, 94, 0.4);
+        outline-offset: 4px;
     }
 
     /* Responsive Design - Mobile First */
@@ -257,10 +274,17 @@
     }
     </style>
 
-    <section class="ozgida-hero-slider">
+    <?php
+    $sliderAccessibility = '';
+    if($hasBanners && count($banners) > 1) {
+        $sliderAccessibility = ' tabindex="0" role="region" aria-roledescription="carousel" aria-live="polite" aria-label="Öne çıkan bannerlar"';
+    }
+    ?>
+    <section class="ozgida-hero-slider" data-ozgida-slider data-ozgida-autoplay="5000"<?=$sliderAccessibility?>>
         <?php
         $banners = $VT->VeriGetir("banner", "WHERE durum=?", array(1), "ORDER BY sirano ASC");
         $hasBanners = ($banners !== false && count($banners) > 0);
+        $bannerCount = $hasBanners ? count($banners) : 0;
 
         if($hasBanners) {
             foreach($banners as $index => $banner) {
@@ -273,6 +297,7 @@
                 $mobileImage = !empty($banner["resim_mobil"]) ? SITE . "images/banner/" . $banner["resim_mobil"] : $image;
                 $altText = !empty($title) ? $title : "Özgıda Toposmanoğlu Bannerı";
                 ?>
+                <div class="ozgida-slide <?=$isActive?>" data-slide="<?=$index?>" role="group" aria-roledescription="slide" aria-label="<?=($index + 1)?> / <?=$bannerCount?>" aria-hidden="<?=$isActive ? 'false' : 'true'?>">
                 <div class="ozgida-slide <?=$isActive?>" data-slide="<?=$index?>">
                     <picture class="ozgida-slide-bg">
                         <source srcset="<?=$mobileImage?>" media="(max-width: 991px)">
@@ -300,6 +325,7 @@
             }
         } else {
             ?>
+            <div class="ozgida-slide active" role="group" aria-roledescription="slide" aria-label="1 / 1" aria-hidden="false">
             <div class="ozgida-slide active">
                 <picture class="ozgida-slide-bg">
                     <source srcset="<?=SITE?>img/hero/hero-bg-7-1.jpg" media="(max-width: 991px)">
@@ -323,163 +349,25 @@
         }
         ?>
 
-        <?php if($hasBanners && count($banners) > 1): ?>
-            <button class="ozgida-nav ozgida-nav-prev" onclick="ozgidaSlider.prev()" aria-label="Önceki">
+        <?php if($bannerCount > 1): ?>
+            <button class="ozgida-nav ozgida-nav-prev" type="button" data-ozgida-slider-prev aria-label="Önceki">
                 <i class="fas fa-chevron-left"></i>
             </button>
-            <button class="ozgida-nav ozgida-nav-next" onclick="ozgidaSlider.next()" aria-label="Sonraki">
+            <button class="ozgida-nav ozgida-nav-next" type="button" data-ozgida-slider-next aria-label="Sonraki">
                 <i class="fas fa-chevron-right"></i>
             </button>
 
             <div class="ozgida-pagination">
                 <?php foreach($banners as $index => $banner): ?>
-                    <span class="ozgida-dot <?=$index === 0 ? 'active' : ''?>"
-                          onclick="ozgidaSlider.goTo(<?=$index?>)"
-                          data-slide="<?=$index?>"></span>
+                    <?php $dotActive = ($index === 0); ?>
+                    <button type="button"
+                            class="ozgida-dot <?=$dotActive ? 'active' : ''?>"
+                            data-ozgida-slider-dot="<?=$index?>"
+                            aria-label="<?=($index + 1)?>. slayt"<?=$dotActive ? ' aria-current="true"' : ''?>></button>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
     </section>
-
-    <?php if($hasBanners && count($banners) > 1): ?>
-    <script>
-    const ozgidaSlider = {
-        current: 0,
-        total: <?=count($banners)?>,
-        interval: null,
-        touchStartX: 0,
-        touchEndX: 0,
-
-        init() {
-            this.startAutoplay();
-            this.initKeyboard();
-            this.initTouch();
-            this.initMousePause();
-        },
-
-        // Keyboard navigation
-        initKeyboard() {
-            document.addEventListener('keydown', (e) => {
-                if(e.key === 'ArrowLeft') this.prev();
-                if(e.key === 'ArrowRight') this.next();
-                if(e.key === 'Escape') this.stopAutoplay();
-            });
-        },
-
-        // Touch/Swipe support
-        initTouch() {
-            const slider = document.querySelector('.ozgida-hero-slider');
-
-            slider.addEventListener('touchstart', (e) => {
-                this.touchStartX = e.changedTouches[0].screenX;
-                this.stopAutoplay();
-            }, {passive: true});
-
-            slider.addEventListener('touchend', (e) => {
-                this.touchEndX = e.changedTouches[0].screenX;
-                this.handleSwipe();
-                this.startAutoplay();
-            }, {passive: true});
-        },
-
-        handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = this.touchStartX - this.touchEndX;
-
-            if(Math.abs(diff) > swipeThreshold) {
-                if(diff > 0) {
-                    this.next(); // Swipe left
-                } else {
-                    this.prev(); // Swipe right
-                }
-            }
-        },
-
-        // Mouse pause
-        initMousePause() {
-            const slider = document.querySelector('.ozgida-hero-slider');
-            slider.addEventListener('mouseenter', () => this.stopAutoplay());
-            slider.addEventListener('mouseleave', () => this.startAutoplay());
-        },
-
-        goTo(index) {
-            if(index === this.current) return;
-
-            // Remove active classes
-            document.querySelectorAll('.ozgida-slide, .ozgida-dot').forEach(el => {
-                el.classList.remove('active');
-            });
-
-            // Add active classes
-            const slides = document.querySelectorAll('.ozgida-slide');
-            const dots = document.querySelectorAll('.ozgida-dot');
-
-            if(slides[index]) {
-                slides[index].classList.add('active');
-                // Trigger animation restart
-                const content = slides[index].querySelector('.ozgida-slide-inner');
-                if(content) {
-                    content.style.animation = 'none';
-                    setTimeout(() => {
-                        content.style.animation = '';
-                    }, 10);
-                }
-            }
-            if(dots[index]) dots[index].classList.add('active');
-
-            this.current = index;
-
-            // Announce for screen readers
-            this.announceSlide(index);
-        },
-
-        announceSlide(index) {
-            const slides = document.querySelectorAll('.ozgida-slide');
-            if(slides[index]) {
-                const title = slides[index].querySelector('.ozgida-slide-title');
-                if(title && 'speechSynthesis' in window) {
-                    // Optional: screen reader announcement (can be disabled)
-                    // speechSynthesis.cancel();
-                    // const utterance = new SpeechSynthesisUtterance(`Slide ${index + 1} of ${this.total}`);
-                    // speechSynthesis.speak(utterance);
-                }
-            }
-        },
-
-        next() {
-            this.goTo((this.current + 1) % this.total);
-        },
-
-        prev() {
-            this.goTo((this.current - 1 + this.total) % this.total);
-        },
-
-        startAutoplay() {
-            this.stopAutoplay();
-            this.interval = setInterval(() => this.next(), 5000);
-        },
-
-        stopAutoplay() {
-            if(this.interval) {
-                clearInterval(this.interval);
-                this.interval = null;
-            }
-        }
-    };
-
-    // Initialize slider
-    if(document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => ozgidaSlider.init());
-    } else {
-        ozgidaSlider.init();
-    }
-
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', () => {
-        ozgidaSlider.stopAutoplay();
-    });
-    </script>
-    <?php endif; ?>
     <!--==============================
       About Us Area
     ==============================-->
@@ -552,6 +440,15 @@
     <!--==============================
     Video Area
     ==============================-->
+    <?php
+    if (empty($introVideoUrl)) {
+        $introVideoUrl = 'https://www.youtube.com/watch?v=_sI_Ps7JSEk';
+    }
+
+    if (empty($introVideoEmbedAutoplay)) {
+        $introVideoEmbedAutoplay = 'https://www.youtube.com/embed/_sI_Ps7JSEk?autoplay=1&mute=1&rel=0&showinfo=0';
+    }
+    ?>
     <section class=" sec-bg6">
         <div class="container">
             <div class="row gx-xl-0 gy-30">
