@@ -29,45 +29,99 @@ if(!empty($_GET["ID"]))
     <section class="content">
       <div class="container-fluid">
        <?php
-	   if($_POST)
-	   {
-		   if(!empty($_POST["baslik"]) && !empty($_POST["sirano"]))
-		   {
-			   $baslik=$VT->filter($_POST["baslik"]);
-         $aciklama=$VT->filter($_POST["aciklama"]);
-         $url=$VT->filter($_POST["url"]);
-			   $sirano=$VT->filter($_POST["sirano"]);
+          if($_POST)
+          {
+                  if(!empty($_POST["sirano"]))
+                  {
+                          $baslik=$VT->filter($_POST["baslik"]);
+        $aciklama=$VT->filter($_POST["aciklama"]);
+        $url=$VT->filter($_POST["url"]);
+                          $sirano=$VT->filter($_POST["sirano"]);
 
-         if(!empty($_FILES["resim"]["name"]))
+        $eskiMasaustu = $veri[0]["resim"];
+        $eskiMobil = !empty($veri[0]["resim_mobil"]) ? $veri[0]["resim_mobil"] : $veri[0]["resim"];
+        $masaustuResim = $eskiMasaustu;
+        $mobilResim = $eskiMobil;
+        $hata=false;
+        $mobilYenilendi=false;
+
+        if(!empty($_FILES["resim"]["name"]))
+        {
+         $yeniMasaustu=$VT->upload("resim","../images/banner/");
+          if($yeniMasaustu!=false)
+          {
+            if(!empty($masaustuResim) && file_exists("../images/banner/".$masaustuResim) && $masaustuResim!=$yeniMasaustu)
+            {
+              unlink("../images/banner/".$masaustuResim);
+            }
+            $masaustuResim=$yeniMasaustu;
+          }
+          else
+          {
+            $hata=true;
+             ?>
+                  <div class="alert alert-info alert-dismissible fade show">
+                    <strong>Bilgi!</strong> Masaüstü banner yükleme işleminiz başarısız.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <?php
+          }
+        }
+
+        if(!$hata && !empty($_FILES["resim_mobil"]["name"]))
+        {
+         $yeniMobil=$VT->upload("resim_mobil","../images/banner/");
+         if($yeniMobil!=false)
          {
-          $yukle=$VT->upload("resim","../images/banner/");
-           if($yukle!=false)
-           {
-             $ekle=$VT->SorguCalistir("UPDATE banner","SET baslik=?, aciklama=?, url=?, resim=?, durum=?, sirano=?, tarih=? WHERE ID=?",array($baslik,$aciklama,$url,$yukle,1,$sirano,date("Y-m-d"),$veri[0]["ID"]),1);
-           }
-           else
-           {
-             $ekle=false;
-              ?>
-                   <div class="alert alert-info alert-dismissible fade show">
-                     <strong>Bilgi!</strong> Resim yükleme işleminiz başarısız.
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
-                       <span aria-hidden="true">&times;</span>
-                     </button>
-                   </div>
-                   <?php
-           }
+         if(!empty($mobilResim) && file_exists("../images/banner/".$mobilResim) && $mobilResim!=$yeniMobil && $mobilResim!=$masaustuResim)
+          {
+            unlink("../images/banner/".$mobilResim);
+          }
+          $mobilResim=$yeniMobil;
+          $mobilYenilendi=true;
          }
          else
          {
-          $ekle=$VT->SorguCalistir("UPDATE banner","SET baslik=?, aciklama=?, url=?, durum=?, sirano=?, tarih=? WHERE ID=?",array($baslik,$aciklama,$url,1,$sirano,date("Y-m-d"),$veri[0]["ID"]),1);
+          $hata=true;
+          ?>
+                  <div class="alert alert-info alert-dismissible fade show">
+                    <strong>Bilgi!</strong> Mobil banner yükleme işleminiz başarısız.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <?php
          }
+        }
+
+        if(!$hata && !$mobilYenilendi)
+        {
+         if(empty($eskiMobil) || $eskiMobil==$eskiMasaustu)
+         {
+          $mobilResim=$masaustuResim;
+         }
+        }
+
+        if(!$hata)
+        {
+         $ekle=$VT->SorguCalistir(
+          "UPDATE banner",
+          "SET baslik=?, aciklama=?, url=?, resim=?, resim_mobil=?, durum=?, sirano=?, tarih=? WHERE ID=?",
+          array($baslik,$aciklama,$url,$masaustuResim,$mobilResim,1,$sirano,date("Y-m-d"),$veri[0]["ID"]),
+          1
+         );
+        }
+        else
+        {
+         $ekle=false;
+        }
 
 
-
-			   if($ekle!=false)
-			   {
-				    ?>
+                          if($ekle!=false)
+                          {
+                                   ?>
                    <div class="alert alert-success alert-dismissible fade show">
                      <strong>Başarılı!</strong> İşleminiz başarıyla güncellendi.
                      <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
@@ -88,17 +142,17 @@ if(!empty($_GET["ID"]))
                    <?php
 			   }
 		   }
-		   else
-		   {
-			   ?>
-               <div class="alert alert-danger alert-dismissible fade show">
-                 <strong>Uyarı!</strong> Boş bıraktığınız alanları doldurunuz.
-                 <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
-                   <span aria-hidden="true">&times;</span>
-                 </button>
-               </div>
-               <?php
-		   }
+                  else
+                  {
+                          ?>
+              <div class="alert alert-danger alert-dismissible fade show">
+                <strong>Uyarı!</strong> Sıra numarası alanını doldurunuz.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <?php
+                  }
 	   }
 	   ?>
        <div class="row">
@@ -127,18 +181,33 @@ if(!empty($_GET["ID"]))
                  <hr class="my-4">
 
                  <div class="form-group">
-                   <label for="resim">Banner Resmi</label>
-                   <?php if(!empty($veri[0]["resim"])): ?>
-                   <div class="mb-3">
-                     <img src="<?=SITE?>../images/banner/<?=$veri[0]["resim"]?>" alt="Mevcut banner" style="max-width: 200px; border: 1px solid #fecdd3; border-radius: 0.25rem;">
-                     <p class="text-sm text-muted mt-2">Mevcut banner resmi</p>
-                   </div>
-                   <?php endif; ?>
-                   <div class="custom-file">
-                     <input type="file" class="custom-file-input" id="resim" name="resim" accept="image/*">
-                     <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
-                   </div>
-                   <small class="form-text text-muted">Yeni resim seçmezseniz mevcut resim korunur</small>
+                  <label for="resim">Masaüstü Banner Resmi</label>
+                  <?php if(!empty($veri[0]["resim"])): ?>
+                  <div class="mb-3">
+                    <img src="<?=SITE?>../images/banner/<?=$veri[0]["resim"]?>" alt="Mevcut masaüstü banner" style="max-width: 200px; border: 1px solid #fecdd3; border-radius: 0.25rem;">
+                    <p class="text-sm text-muted mt-2">Mevcut masaüstü banner resmi</p>
+                  </div>
+                  <?php endif; ?>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="resim" name="resim" accept="image/*">
+                    <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
+                  </div>
+                  <small class="form-text text-muted">Yeni resim seçmezseniz mevcut masaüstü görseli korunur</small>
+                 </div>
+
+                 <div class="form-group">
+                  <label for="resim_mobil">Mobil Banner Resmi</label>
+                  <?php if(!empty($veri[0]["resim_mobil"])): ?>
+                  <div class="mb-3">
+                    <img src="<?=SITE?>../images/banner/<?=$veri[0]["resim_mobil"]?>" alt="Mevcut mobil banner" style="max-width: 200px; border: 1px solid #fecdd3; border-radius: 0.25rem;">
+                    <p class="text-sm text-muted mt-2">Mevcut mobil banner resmi</p>
+                  </div>
+                  <?php endif; ?>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="resim_mobil" name="resim_mobil" accept="image/*">
+                    <label class="custom-file-label" for="resim_mobil">Dosya seçiniz...</label>
+                  </div>
+                  <small class="form-text text-muted">Mobil için farklı bir görsel seçebilirsiniz. Boş bırakırsanız mevcut görsel korunur.</small>
                  </div>
 
                  <div class="form-group">

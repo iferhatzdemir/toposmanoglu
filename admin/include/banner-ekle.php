@@ -22,29 +22,57 @@
        <?php
 	   if($_POST)
 	   {
-		   if(!empty($_POST["baslik"]) && !empty($_POST["sirano"]) && !empty($_FILES["resim"]["name"]))
-		   {
-			   $baslik=$VT->filter($_POST["baslik"]);
+          if(
+            !empty($_POST["sirano"]) &&
+            !empty($_FILES["resim"]["name"]) &&
+            !empty($_FILES["resim_mobil"]["name"])
+          )
+          {
+                  $baslik=$VT->filter($_POST["baslik"]);
          $aciklama=$VT->filter($_POST["aciklama"]);
          $url=$VT->filter($_POST["url"]);
-			   $sirano=$VT->filter($_POST["sirano"]);
+                          $sirano=$VT->filter($_POST["sirano"]);
 
-				   $yukle=$VT->upload("resim","../images/banner/");
-				   if($yukle!=false)
-				   {
-					   $ekle=$VT->SorguCalistir("INSERT INTO banner","SET baslik=?, aciklama=?, url=?, resim=?, durum=?, sirano=?, tarih=?",array($baslik,$aciklama,$url,$yukle,1,$sirano,date("Y-m-d")));
-				   }
-				   else
-				   {
-             $ekle=false;
-					    ?>
-                   <div class="alert alert-info alert-dismissible fade show">
-                     <strong>Bilgi!</strong> Resim yükleme işleminiz başarısız.
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
-                       <span aria-hidden="true">&times;</span>
-                     </button>
-                   </div>
-                   <?php
+                                  $masaustuResim=$VT->upload("resim","../images/banner/");
+                                  if($masaustuResim!=false)
+                                  {
+                                          $mobilResim=$VT->upload("resim_mobil","../images/banner/");
+                                          if($mobilResim!=false)
+                                          {
+                                                  $ekle=$VT->SorguCalistir(
+                                                    "INSERT INTO banner",
+                                                    "SET baslik=?, aciklama=?, url=?, resim=?, resim_mobil=?, durum=?, sirano=?, tarih=?",
+                                                    array($baslik,$aciklama,$url,$masaustuResim,$mobilResim,1,$sirano,date("Y-m-d"))
+                                                  );
+                                          }
+                                          else
+                                          {
+            $ekle=false;
+            if(file_exists("../images/banner/".$masaustuResim))
+            {
+              unlink("../images/banner/".$masaustuResim);
+            }
+            ?>
+                  <div class="alert alert-info alert-dismissible fade show">
+                    <strong>Bilgi!</strong> Mobil banner yükleme işleminiz başarısız.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <?php
+                                          }
+                                  }
+                                  else
+                                  {
+            $ekle=false;
+                                          ?>
+                  <div class="alert alert-info alert-dismissible fade show">
+                    <strong>Bilgi!</strong> Masaüstü ya da mobil banner yükleme işleminiz başarısız.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <?php
 				   }
 
 
@@ -110,12 +138,21 @@
                  <hr class="my-4">
 
                  <div class="form-group">
-                   <label for="resim">Banner Resmi</label>
+                  <label for="resim">Masaüstü Banner Resmi</label>
                    <div class="custom-file">
                      <input type="file" class="custom-file-input" id="resim" name="resim" accept="image/*" required>
                      <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
                    </div>
-                   <small class="form-text text-muted">Banner resmi zorunludur</small>
+                   <small class="form-text text-muted">1920x700 px önerilir. Masaüstü banner resmi zorunludur.</small>
+                 </div>
+
+                 <div class="form-group">
+                  <label for="resim_mobil">Mobil Banner Resmi</label>
+                   <div class="custom-file">
+                     <input type="file" class="custom-file-input" id="resim_mobil" name="resim_mobil" accept="image/*" required>
+                     <label class="custom-file-label" for="resim_mobil">Dosya seçiniz...</label>
+                   </div>
+                   <small class="form-text text-muted">800x800 px veya dikey oranlı bir görsel yükleyiniz. Mobil banner resmi zorunludur.</small>
                  </div>
 
                  <div class="form-group">

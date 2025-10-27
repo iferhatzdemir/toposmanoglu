@@ -30,6 +30,15 @@
 
     .ozgida-slide-bg {
         position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+    }
+
+    .ozgida-slide-bg img {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -256,19 +265,26 @@
         if($hasBanners) {
             foreach($banners as $index => $banner) {
                 $isActive = ($index === 0) ? 'active' : '';
-                $title = stripslashes($banner["baslik"]);
+                $title = !empty($banner["baslik"]) ? stripslashes($banner["baslik"]) : "";
                 $desc = !empty($banner["aciklama"]) ? stripslashes($banner["aciklama"]) : "";
                 $btnText = !empty($banner["butontext"]) ? stripslashes($banner["butontext"]) : "Alışverişe Başla";
                 $link = !empty($banner["link"]) ? $banner["link"] : SITE . "urunler";
                 $image = SITE . "images/banner/" . $banner["resim"];
+                $mobileImage = !empty($banner["resim_mobil"]) ? SITE . "images/banner/" . $banner["resim_mobil"] : $image;
+                $altText = !empty($title) ? $title : "Özgıda Toposmanoğlu Bannerı";
                 ?>
                 <div class="ozgida-slide <?=$isActive?>" data-slide="<?=$index?>">
-                    <img src="<?=$image?>" alt="<?=$title?>" class="ozgida-slide-bg" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
+                    <picture class="ozgida-slide-bg">
+                        <source srcset="<?=$mobileImage?>" media="(max-width: 991px)">
+                        <img src="<?=$image?>" alt="<?=$altText?>" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
+                    </picture>
 
                     <div class="ozgida-slide-content">
                         <div class="container">
                             <div class="ozgida-slide-inner">
-                                <h1 class="ozgida-slide-title"><?=$title?></h1>
+                                <?php if(!empty($title)): ?>
+                                    <h1 class="ozgida-slide-title"><?=$title?></h1>
+                                <?php endif; ?>
                                 <?php if(!empty($desc)): ?>
                                     <p class="ozgida-slide-desc"><?=$desc?></p>
                                 <?php endif; ?>
@@ -285,7 +301,10 @@
         } else {
             ?>
             <div class="ozgida-slide active">
-                <img src="<?=SITE?>img/hero/hero-bg-7-1.jpg" alt="Özgıda Toposmanoğlu" class="ozgida-slide-bg">
+                <picture class="ozgida-slide-bg">
+                    <source srcset="<?=SITE?>img/hero/hero-bg-7-1.jpg" media="(max-width: 991px)">
+                    <img src="<?=SITE?>img/hero/hero-bg-7-1.jpg" alt="Özgıda Toposmanoğlu">
+                </picture>
 
                 <div class="ozgida-slide-content">
                     <div class="container">
@@ -539,7 +558,7 @@
                 <div class="col-lg-6 col-xl-7">
                     <div class="video-box">
                         <img src="assets/img/video/video-1-1.jpg" alt="Video image">
-                        <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video"><i class="fas fa-play"></i></a>
+                        <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video" data-intro-video-open="true"><i class="fas fa-play"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-xl-5">
