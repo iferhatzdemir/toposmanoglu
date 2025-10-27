@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `banner` (
   `aciklama` varchar(255) COLLATE utf8_turkish_ci DEFAULT NULL,
   `url` varchar(255) COLLATE utf8_turkish_ci DEFAULT NULL,
   `resim` varchar(255) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `resim_mobil` varchar(255) COLLATE utf8_turkish_ci DEFAULT NULL,
   `durum` int(5) DEFAULT NULL,
   `sirano` int(11) DEFAULT NULL,
   `tarih` date DEFAULT NULL,
@@ -70,12 +71,12 @@ CREATE TABLE IF NOT EXISTS `banner` (
 -- Tablo döküm verisi `banner`
 --
 
-INSERT INTO `banner` (`ID`, `baslik`, `aciklama`, `url`, `resim`, `durum`, `sirano`, `tarih`) VALUES
-(1, 'Sezon İndirimleri Başladı!', 'Sizler için hazırlanan fırsatları kaçırmayın.', '#', '15ed02aaa8494c.jpg', 1, 1, '2020-05-28'),
-(2, 'Akıllı Cihazlarda Fırsatlar', 'Fırsatlar sizi bekliyor', '#', '15ed02ad376edc.jpg', 1, 2, '2020-05-28'),
-(3, 'Teknoloji Ürünlerinde Taksit Fırsatı', '6 aya varan taksitler', '#', '15ed02adff29bb.jpg', 1, 3, '2020-05-28'),
-(4, 'Kozmatik Ürünlerinde Fırasatlar', 'Güzelliğinizi yansıtmak için tek dokunuş yeter.', '#', '15ed02bd2eeff7.png', 1, 4, '2020-05-28'),
-(5, 'Giyim ve Moda Ürünlerimiz', 'Tercihiniz kalite ile birleşiyor.', '#', '15ed02d5e8c563.png', 1, 5, '2020-05-28');
+INSERT INTO `banner` (`ID`, `baslik`, `aciklama`, `url`, `resim`, `resim_mobil`, `durum`, `sirano`, `tarih`) VALUES
+(1, 'Sezon İndirimleri Başladı!', 'Sizler için hazırlanan fırsatları kaçırmayın.', '#', '15ed02aaa8494c.jpg', '15ed02aaa8494c.jpg', 1, 1, '2020-05-28'),
+(2, 'Akıllı Cihazlarda Fırsatlar', 'Fırsatlar sizi bekliyor', '#', '15ed02ad376edc.jpg', '15ed02ad376edc.jpg', 1, 2, '2020-05-28'),
+(3, 'Teknoloji Ürünlerinde Taksit Fırsatı', '6 aya varan taksitler', '#', '15ed02adff29bb.jpg', '15ed02adff29bb.jpg', 1, 3, '2020-05-28'),
+(4, 'Kozmatik Ürünlerinde Fırasatlar', 'Güzelliğinizi yansıtmak için tek dokunuş yeter.', '#', '15ed02bd2eeff7.png', '15ed02bd2eeff7.png', 1, 4, '2020-05-28'),
+(5, 'Giyim ve Moda Ürünlerimiz', 'Tercihiniz kalite ile birleşiyor.', '#', '15ed02d5e8c563.png', '15ed02d5e8c563.png', 1, 5, '2020-05-28');
 
 -- --------------------------------------------------------
 

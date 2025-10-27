@@ -30,6 +30,15 @@
 
     .ozgida-slide-bg {
         position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+    }
+
+    .ozgida-slide-bg img {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -261,9 +270,13 @@
                 $btnText = !empty($banner["butontext"]) ? stripslashes($banner["butontext"]) : "Alışverişe Başla";
                 $link = !empty($banner["link"]) ? $banner["link"] : SITE . "urunler";
                 $image = SITE . "images/banner/" . $banner["resim"];
+                $mobileImage = !empty($banner["resim_mobil"]) ? SITE . "images/banner/" . $banner["resim_mobil"] : $image;
                 ?>
                 <div class="ozgida-slide <?=$isActive?>" data-slide="<?=$index?>">
-                    <img src="<?=$image?>" alt="<?=$title?>" class="ozgida-slide-bg" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
+                    <picture class="ozgida-slide-bg">
+                        <source srcset="<?=$mobileImage?>" media="(max-width: 991px)">
+                        <img src="<?=$image?>" alt="<?=$title?>" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
+                    </picture>
 
                     <div class="ozgida-slide-content">
                         <div class="container">
@@ -285,7 +298,10 @@
         } else {
             ?>
             <div class="ozgida-slide active">
-                <img src="<?=SITE?>img/hero/hero-bg-7-1.jpg" alt="Özgıda Toposmanoğlu" class="ozgida-slide-bg">
+                <picture class="ozgida-slide-bg">
+                    <source srcset="<?=SITE?>img/hero/hero-bg-7-1.jpg" media="(max-width: 991px)">
+                    <img src="<?=SITE?>img/hero/hero-bg-7-1.jpg" alt="Özgıda Toposmanoğlu">
+                </picture>
 
                 <div class="ozgida-slide-content">
                     <div class="container">

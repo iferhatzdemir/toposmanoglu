@@ -168,8 +168,17 @@
                           <td><?=$sira?></td>
                           <td>
                             <div style="display: flex; align-items: center;">
-                              <div style="margin-right: 15px;">
-                                <img src="<?=ANASITE?>images/banner/<?=$veriler[$i]["resim"]?>" class="banner-image" style="height: 60px; width: 100px; object-fit: cover;">
+                              <div style="margin-right: 15px; display:flex; flex-direction:column; gap:8px;">
+                                <div>
+                                  <span class="badge badge-pill badge-light" style="background-color:#ffe4e6; color:#9f1239;">Masaüstü</span>
+                                  <img src="<?=ANASITE?>images/banner/<?=$veriler[$i]["resim"]?>" class="banner-image mt-1" style="height: 60px; width: 100px; object-fit: cover;">
+                                </div>
+                                <?php if(!empty($veriler[$i]["resim_mobil"])): ?>
+                                <div>
+                                  <span class="badge badge-pill badge-light" style="background-color:#fecdd3; color:#9f1239;">Mobil</span>
+                                  <img src="<?=ANASITE?>images/banner/<?=$veriler[$i]["resim_mobil"]?>" class="banner-image mt-1" style="height: 60px; width: 100px; object-fit: cover;">
+                                </div>
+                                <?php endif; ?>
                               </div>
                               <div>
                                 <strong style="color: #9f1239;"><?=stripslashes($veriler[$i]["baslik"])?></strong>
