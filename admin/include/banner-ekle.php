@@ -22,29 +22,57 @@
        <?php
 	   if($_POST)
 	   {
-		   if(!empty($_POST["baslik"]) && !empty($_POST["sirano"]) && !empty($_FILES["resim"]["name"]))
-		   {
-			   $baslik=$VT->filter($_POST["baslik"]);
+          if(
+            !empty($_POST["sirano"]) &&
+            !empty($_FILES["resim"]["name"]) &&
+            !empty($_FILES["resim_mobil"]["name"])
+          )
+          {
+                  $baslik=$VT->filter($_POST["baslik"]);
          $aciklama=$VT->filter($_POST["aciklama"]);
          $url=$VT->filter($_POST["url"]);
-			   $sirano=$VT->filter($_POST["sirano"]);
+                          $sirano=$VT->filter($_POST["sirano"]);
 
-				   $yukle=$VT->upload("resim","../images/banner/");
-				   if($yukle!=false)
-				   {
-					   $ekle=$VT->SorguCalistir("INSERT INTO banner","SET baslik=?, aciklama=?, url=?, resim=?, durum=?, sirano=?, tarih=?",array($baslik,$aciklama,$url,$yukle,1,$sirano,date("Y-m-d")));
-				   }
-				   else
-				   {
-             $ekle=false;
-					    ?>
-                   <div class="alert alert-info alert-dismissible fade show">
-                     <strong>Bilgi!</strong> Resim yükleme işleminiz başarısız.
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
-                       <span aria-hidden="true">&times;</span>
-                     </button>
-                   </div>
-                   <?php
+                                  $masaustuResim=$VT->upload("resim","../images/banner/");
+                                  if($masaustuResim!=false)
+                                  {
+                                          $mobilResim=$VT->upload("resim_mobil","../images/banner/");
+                                          if($mobilResim!=false)
+                                          {
+                                                  $ekle=$VT->SorguCalistir(
+                                                    "INSERT INTO banner",
+                                                    "SET baslik=?, aciklama=?, url=?, resim=?, resim_mobil=?, durum=?, sirano=?, tarih=?",
+                                                    array($baslik,$aciklama,$url,$masaustuResim,$mobilResim,1,$sirano,date("Y-m-d"))
+                                                  );
+                                          }
+                                          else
+                                          {
+            $ekle=false;
+            if(file_exists("../images/banner/".$masaustuResim))
+            {
+              unlink("../images/banner/".$masaustuResim);
+            }
+            ?>
+                  <div class="alert alert-info alert-dismissible fade show">
+                    <strong>Bilgi!</strong> Mobil banner yükleme işleminiz başarısız.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <?php
+                                          }
+                                  }
+                                  else
+                                  {
+            $ekle=false;
+                                          ?>
+                  <div class="alert alert-info alert-dismissible fade show">
+                    <strong>Bilgi!</strong> Masaüstü ya da mobil banner yükleme işleminiz başarısız.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <?php
 				   }
 
 
@@ -109,14 +137,51 @@
 
                  <hr class="my-4">
 
-                 <div class="form-group">
-                   <label for="resim">Banner Resmi</label>
-                   <div class="custom-file">
-                     <input type="file" class="custom-file-input" id="resim" name="resim" accept="image/*" required>
-                     <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
-                   </div>
-                   <small class="form-text text-muted">Banner resmi zorunludur</small>
-                 </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group banner-upload-group">
+                      <label for="resim" class="d-flex align-items-center justify-content-between">
+                        <span>Masaüstü Banner Görseli</span>
+                        <span class="badge badge-pill badge-required">Zorunlu</span>
+                      </label>
+                      <div id="desktopBannerPreviewAdd" class="banner-upload-zone">
+                        <div class="banner-upload-text">
+                          <i class="fas fa-desktop"></i>
+                          <strong>1920 x 700 px</strong>
+                          <span>Geniş formatlı bir görsel yükleyiniz.</span>
+                        </div>
+                        <img src="" alt="Masaüstü banner önizlemesi" class="banner-upload-image" />
+                      </div>
+                      <div class="custom-file mt-3">
+                        <input type="file" class="custom-file-input banner-upload-input" id="resim" name="resim" accept="image/*" data-preview-target="#desktopBannerPreviewAdd" required>
+                        <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
+                      </div>
+                      <small class="form-text text-muted">JPG veya PNG önerilir. Maksimum dosya boyutu 2 MB.</small>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group banner-upload-group">
+                      <label for="resim_mobil" class="d-flex align-items-center justify-content-between">
+                        <span>Mobil Banner Görseli</span>
+                        <span class="badge badge-pill badge-required">Zorunlu</span>
+                      </label>
+                      <div id="mobileBannerPreviewAdd" class="banner-upload-zone">
+                        <div class="banner-upload-text">
+                          <i class="fas fa-mobile-alt"></i>
+                          <strong>800 x 1000 px</strong>
+                          <span>Dikey oranlı bir görsel tercih ediniz.</span>
+                        </div>
+                        <img src="" alt="Mobil banner önizlemesi" class="banner-upload-image" />
+                      </div>
+                      <div class="custom-file mt-3">
+                        <input type="file" class="custom-file-input banner-upload-input" id="resim_mobil" name="resim_mobil" accept="image/*" data-preview-target="#mobileBannerPreviewAdd" required>
+                        <label class="custom-file-label" for="resim_mobil">Dosya seçiniz...</label>
+                      </div>
+                      <small class="form-text text-muted">Mobil cihazlarda en iyi görünüm için yüksek çözünürlüklü görseller kullanın.</small>
+                    </div>
+                  </div>
+                </div>
 
                  <div class="form-group">
                    <label for="sirano">Sıra No</label>
@@ -212,6 +277,74 @@
            color: white;
          }
 
+         .badge-required {
+           background: rgba(244, 63, 94, 0.1);
+           color: #be123c;
+           font-weight: 600;
+           border: 1px solid rgba(244, 63, 94, 0.35);
+         }
+
+         .banner-upload-group {
+           margin-bottom: 2rem;
+         }
+
+         .banner-upload-zone {
+           position: relative;
+           border: 2px dashed rgba(244, 63, 94, 0.45);
+           border-radius: 1rem;
+           padding: 2rem 1.25rem;
+           background: rgba(255, 241, 242, 0.65);
+           text-align: center;
+           min-height: 220px;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           transition: all 0.3s ease;
+           overflow: hidden;
+         }
+
+         .banner-upload-zone:hover {
+           border-color: #f43f5e;
+           background: rgba(255, 228, 230, 0.6);
+           box-shadow: inset 0 0 0 1px rgba(244, 63, 94, 0.1);
+         }
+
+         .banner-upload-zone .banner-upload-text {
+           color: #9f1239;
+           display: flex;
+           flex-direction: column;
+           gap: 0.5rem;
+           align-items: center;
+           font-size: 0.95rem;
+           font-weight: 500;
+         }
+
+         .banner-upload-zone .banner-upload-text i {
+           font-size: 2.5rem;
+           color: #f43f5e;
+         }
+
+         .banner-upload-image {
+           display: none;
+           max-width: 100%;
+           border-radius: 0.75rem;
+           box-shadow: 0 10px 30px rgba(244, 63, 94, 0.2);
+         }
+
+         .banner-upload-zone.has-image {
+           border-style: solid;
+           border-color: rgba(244, 63, 94, 0.4);
+           background: white;
+         }
+
+         .banner-upload-zone.has-image .banner-upload-text {
+           display: none;
+         }
+
+         .banner-upload-zone.has-image .banner-upload-image {
+           display: block;
+         }
+
          label {
            color: #9f1239;
            font-weight: 500;
@@ -220,10 +353,35 @@
 
        <script>
        $(document).ready(function() {
-         // Custom file input
+         function updateBannerPreview(input) {
+           var targetSelector = $(input).data('preview-target');
+           if (!targetSelector) { return; }
+
+           var $zone = $(targetSelector);
+           if (!$zone.length) { return; }
+
+           var $image = $zone.find('.banner-upload-image');
+
+           if (input.files && input.files[0]) {
+             var reader = new FileReader();
+             reader.onload = function(e) {
+               $zone.addClass('has-image');
+               $image.attr('src', e.target.result);
+             };
+             reader.readAsDataURL(input.files[0]);
+           } else {
+             $zone.removeClass('has-image');
+             $image.attr('src', '');
+           }
+         }
+
          $('.custom-file-input').on('change', function() {
            var fileName = $(this).val().split('\\').pop();
-           $(this).next('.custom-file-label').html(fileName);
+           $(this).next('.custom-file-label').html(fileName || 'Dosya seçiniz...');
+         });
+
+         $('.banner-upload-input').on('change', function() {
+           updateBannerPreview(this);
          });
        });
        </script>

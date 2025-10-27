@@ -1,6 +1,94 @@
 (function ($) {
   "use strict";
 
+  var $introVideoModal = $('#introVideoModal');
+  var $preloader = $('.preloader');
+  var introVideoDisplayed = false;
+
+  function showIntroVideoModal(forceOpen) {
+    if (!$introVideoModal.length) {
+      return;
+    }
+
+    if ($introVideoModal.hasClass('is-visible')) {
+      return;
+    }
+
+    if (introVideoDisplayed && !forceOpen) {
+      return;
+    }
+
+    introVideoDisplayed = true;
+
+    var delay = forceOpen ? 0 : 400;
+
+    setTimeout(function () {
+      var $iframe = $introVideoModal.find('iframe');
+      var targetSrc = $iframe.data('src');
+      var currentSrc = $iframe.attr('src');
+
+      if (targetSrc && currentSrc !== targetSrc) {
+        $iframe.attr('src', targetSrc);
+      }
+
+      $('body').addClass('video-modal-open');
+      $introVideoModal.attr('aria-hidden', 'false').addClass('is-visible');
+
+      var $closeButton = $introVideoModal.find('.video-modal__close');
+      if ($closeButton.length) {
+        setTimeout(function () {
+          $closeButton.trigger('focus');
+        }, 50);
+      }
+    }, delay);
+  }
+
+  function hideIntroVideoModal() {
+    if (!$introVideoModal.length) {
+      return;
+    }
+
+    $introVideoModal.removeClass('is-visible').attr('aria-hidden', 'true');
+    $('body').removeClass('video-modal-open');
+
+    var $iframe = $introVideoModal.find('iframe');
+    if ($iframe.length) {
+      var activeSrc = $iframe.attr('src');
+      if (activeSrc) {
+        $iframe.attr('src', '');
+      }
+    }
+  }
+
+  if ($introVideoModal.length) {
+    $introVideoModal.on('click', function (e) {
+      if ($(e.target).is($introVideoModal) || $(e.target).is('.video-modal__overlay')) {
+        hideIntroVideoModal();
+      }
+    });
+
+    $introVideoModal.find('.video-modal__content').on('click', function (e) {
+      e.stopPropagation();
+    });
+
+    $introVideoModal.find('[data-video-modal-close]').on('click', function (e) {
+      e.preventDefault();
+      hideIntroVideoModal();
+    });
+
+    $('[data-intro-video-open]').on('click', function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      showIntroVideoModal(true);
+    });
+
+    $(document).on('keydown', function (e) {
+      if (e.key === 'Escape' && $introVideoModal.hasClass('is-visible')) {
+        hideIntroVideoModal();
+      }
+    });
+  }
+
 /*===========================================
       Table of contents
   01. On Load Function
@@ -37,17 +125,24 @@
 
   /*---------- 01. On Load Function ----------*/
   $(window).on('load', function () {
-    $('.preloader').fadeOut();
+    if ($preloader.length && $preloader.is(':visible')) {
+      $preloader.fadeOut(500, function () {
+        showIntroVideoModal();
+      });
+    } else {
+      showIntroVideoModal();
+    }
   });
 
 
 
   /*---------- 02. Preloader ----------*/
-  if ($('.preloader').length > 0) {
+  if ($preloader.length > 0) {
     $('.preloaderCls').each(function () {
       $(this).on('click', function (e) {
         e.preventDefault();
-        $('.preloader').css('display', 'none');
+        $preloader.css('display', 'none');
+        showIntroVideoModal();
       })
     });
   };

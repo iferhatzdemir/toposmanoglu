@@ -7,11 +7,19 @@ if(!empty($_GET["ID"]))
 		$veri=$VT->VeriGetir("banner","WHERE ID=?",array($ID),"ORDER BY ID ASC",1);
 		if($veri!=false)
 		{
-			$resim=$veri[0]["resim"];
-			if(file_exists("../images/banner/".$resim))
-			{
-				unlink("../images/banner/".$resim);
-			}
+                        $resim=$veri[0]["resim"];
+                        if(file_exists("../images/banner/".$resim))
+                        {
+                                unlink("../images/banner/".$resim);
+                        }
+                        if(!empty($veri[0]["resim_mobil"]))
+                        {
+                                $mobilResim=$veri[0]["resim_mobil"];
+                                if($mobilResim!=$resim && file_exists("../images/banner/".$mobilResim))
+                                {
+                                        unlink("../images/banner/".$mobilResim);
+                                }
+                        }
 			$sil=$VT->SorguCalistir("DELETE FROM banner","WHERE ID=?",array($ID),1);
 			?>
         <meta http-equiv="refresh" content="0;url=<?=SITE?>banner-liste">
