@@ -140,20 +140,30 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="resim">Masaüstü Banner Görseli <span class="text-danger">*</span></label>
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="resim" name="resim" accept="image/*" required>
-                      <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
+                    <div class="banner-upload-card">
+                      <div class="banner-preview" id="preview-desktop" data-original="">
+                        <span class="banner-preview-text">1920x700 piksel önerilir</span>
+                      </div>
+                      <div class="custom-file mt-3">
+                        <input type="file" class="custom-file-input" id="resim" name="resim" accept="image/*" required>
+                        <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
+                      </div>
+                      <small class="form-text text-muted">Geniş ekranlar için yatay bir görsel yükleyiniz.</small>
                     </div>
-                    <small class="form-text text-muted">1920x700 piksel boyutlarında JPG veya PNG dosyası yükleyiniz.</small>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label for="resim_mobil">Mobil Banner Görseli <span class="text-danger">*</span></label>
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="resim_mobil" name="resim_mobil" accept="image/*" required>
-                      <label class="custom-file-label" for="resim_mobil">Dosya seçiniz...</label>
+                    <div class="banner-upload-card">
+                      <div class="banner-preview" id="preview-mobile" data-original="">
+                        <span class="banner-preview-text">800x1000 piksel önerilir</span>
+                      </div>
+                      <div class="custom-file mt-3">
+                        <input type="file" class="custom-file-input" id="resim_mobil" name="resim_mobil" accept="image/*" required>
+                        <label class="custom-file-label" for="resim_mobil">Dosya seçiniz...</label>
+                      </div>
+                      <small class="form-text text-muted">Mobil cihazlar için dikey bir görsel yükleyiniz.</small>
                     </div>
-                    <small class="form-text text-muted">800x1000 piksel boyutlarında dikey bir görsel yükleyiniz.</small>
                   </div>
                 </div>
 
@@ -184,11 +194,91 @@
          </div>
        </div>
 
+       <style>
+         .banner-upload-card {
+           border: 1px dashed #fecdd3;
+           border-radius: 0.75rem;
+           padding: 1.5rem;
+           background: linear-gradient(135deg, rgba(255, 241, 242, 0.6), rgba(255, 228, 230, 0.6));
+           transition: border-color 0.3s ease, box-shadow 0.3s ease;
+         }
+
+         .banner-upload-card:hover {
+           border-color: #fda4af;
+           box-shadow: 0 8px 20px rgba(244, 63, 94, 0.12);
+         }
+
+         .banner-preview {
+           position: relative;
+           width: 100%;
+           padding-top: 55%;
+           border-radius: 0.75rem;
+           background-color: rgba(255, 255, 255, 0.65);
+           background-size: cover;
+           background-position: center;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           color: #9f1239;
+           font-weight: 600;
+           text-align: center;
+           overflow: hidden;
+           border: 1px solid rgba(244, 63, 94, 0.25);
+         }
+
+         .banner-preview.has-image {
+           color: transparent;
+           border-color: rgba(244, 63, 94, 0.35);
+           background-color: rgba(255, 255, 255, 0.9);
+         }
+
+         .banner-preview-text {
+           padding: 0 1rem;
+         }
+
+         @media (max-width: 767.98px) {
+           .banner-upload-card {
+             margin-bottom: 1.5rem;
+           }
+         }
+       </style>
+
        <script>
+       function updatePreview(input, previewId) {
+         var preview = document.getElementById(previewId);
+         if(!preview) { return; }
+
+         if(input.files && input.files[0]) {
+           var reader = new FileReader();
+           reader.onload = function(e) {
+             preview.style.backgroundImage = 'url(' + e.target.result + ')';
+             preview.classList.add('has-image');
+           };
+           reader.readAsDataURL(input.files[0]);
+         } else {
+           var original = preview.getAttribute('data-original');
+           if(original) {
+             preview.style.backgroundImage = 'url(' + original + ')';
+             preview.classList.add('has-image');
+           } else {
+             preview.style.backgroundImage = '';
+             preview.classList.remove('has-image');
+           }
+         }
+       }
+
        $(document).ready(function() {
          $('.custom-file-input').on('change', function() {
            var fileName = $(this).val().split('\\').pop();
            $(this).next('.custom-file-label').text(fileName || 'Dosya seçiniz...');
+         });
+
+         $('#resim').on('change', function() {
+           updatePreview(this, 'preview-desktop');
+         });
+
+         $('#resim_mobil').on('change', function() {
+           updatePreview(this, 'preview-mobile');
          });
        });
        </script>
