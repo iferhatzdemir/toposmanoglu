@@ -842,15 +842,16 @@
 
     .video-hero {
         position: relative;
+        z-index: 0;
         overflow: hidden;
         background-color: #000;
-        isolation: isolate;
     }
 
     .video-hero .video-background {
         position: absolute;
         inset: 0;
-        z-index: 0;
+        z-index: -2;
+        pointer-events: none;
     }
 
     .video-hero .video-background .video {
@@ -864,18 +865,13 @@
         position: absolute;
         inset: 0;
         background: rgba(0, 0, 0, 0.45);
-        z-index: 1;
+        z-index: -1;
         pointer-events: none;
     }
 
     .video-hero .container {
         position: relative;
-        z-index: 2;
-    }
-
-    .video-hero + .sec-bg8 {
-        position: relative;
-        z-index: 3;
+        z-index: 1;
     }
 
     /* Nasıl Çalışır - Modern Steps */
