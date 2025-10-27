@@ -640,7 +640,7 @@
                     <div class="img-box2">
                         <div class="img-1">
                             <img src="assets/img/about/ab-6-2.png" alt="About image">
-                            <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video"><i class="fas fa-play"></i></a>
+                            <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video" data-intro-video-open="true"><i class="fas fa-play"></i></a>
                             <div class="img-2">
                                 <img src="assets/img/about/ab-6-3.png" alt="About image">
                             </div>
@@ -1839,6 +1839,28 @@
 
 
 
+
+    <!--==============================
+        Intro Video Modal
+    ============================== -->
+    <div id="introVideoModal" class="video-modal" aria-hidden="true">
+        <div class="video-modal__overlay" data-video-modal-close></div>
+        <div class="video-modal__content" role="dialog" aria-modal="true" aria-label="Foodano Tanıtım Videosu">
+            <button class="video-modal__close" type="button" data-video-modal-close aria-label="Videoyu kapat">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="video-modal__headline">
+                <span class="video-modal__eyebrow">Foodano'ya Hoş Geldiniz</span>
+                <h3 class="video-modal__title">Doğal Lezzetleri Keşfedin</h3>
+            </div>
+            <div class="video-modal__body">
+                <div class="video-modal__media">
+                    <iframe data-src="https://www.youtube.com/embed/_sI_Ps7JSEk?autoplay=1&amp;mute=1&amp;rel=0&amp;showinfo=0" title="Foodano Tanıtım Videosu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <p class="video-modal__description">Organik ürünlerle hazırlanan menümüzü tanıtım videomuzla keşfedin ve çiftlikten sofraya uzanan hikâyemize ortak olun.</p>
+            </div>
+        </div>
+    </div>
 
     <!--==============================
         All Js File
