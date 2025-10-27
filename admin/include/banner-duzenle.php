@@ -172,49 +172,33 @@ if(!empty($_GET["ID"]))
 
                 <hr class="my-4">
 
-                 <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group banner-upload-group">
-                      <label for="resim" class="d-flex align-items-center justify-content-between">
-                        <span>Masaüstü Banner Görseli</span>
-                        <span class="badge badge-pill badge-required">Zorunlu</span>
-                      </label>
-                      <div id="desktopBannerPreviewEdit" class="banner-upload-zone <?php if(!empty($veri[0]["resim"])) echo 'has-image'; ?>">
-                        <div class="banner-upload-text">
-                          <i class="fas fa-desktop"></i>
-                          <strong>1920 x 700 px</strong>
-                          <span>Geniş formatlı bir görsel yükleyiniz.</span>
-                        </div>
-                        <img src="<?php if(!empty($veri[0]["resim"])) echo SITE.'../images/banner/'.$veri[0]["resim"]; ?>" alt="Mevcut masaüstü banner" class="banner-upload-image" />
-                      </div>
-                      <div class="custom-file mt-3">
-                        <input type="file" class="custom-file-input banner-upload-input" id="resim" name="resim" accept="image/*" data-preview-target="#desktopBannerPreviewEdit">
-                        <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
-                      </div>
-                      <small class="form-text text-muted">Yeni görsel seçmezseniz mevcut masaüstü görseli korunur.</small>
+                 <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="resim">Masaüstü Banner Görseli <span class="text-danger">*</span></label>
+                    <?php if(!empty($veri[0]["resim"])): ?>
+                    <div class="mb-3">
+                      <img src="<?=SITE?>../images/banner/<?=$veri[0]["resim"]?>" alt="Mevcut masaüstü banner" class="img-fluid border" style="max-height: 180px;">
                     </div>
+                    <?php endif; ?>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="resim" name="resim" accept="image/*">
+                      <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
+                    </div>
+                    <small class="form-text text-muted">Yeni dosya seçmezseniz mevcut masaüstü görseli korunur.</small>
                   </div>
 
-                  <div class="col-md-6">
-                    <div class="form-group banner-upload-group">
-                      <label for="resim_mobil" class="d-flex align-items-center justify-content-between">
-                        <span>Mobil Banner Görseli</span>
-                        <span class="badge badge-pill badge-required">Zorunlu</span>
-                      </label>
-                      <div id="mobileBannerPreviewEdit" class="banner-upload-zone <?php if(!empty($veri[0]["resim_mobil"])) echo 'has-image'; ?>">
-                        <div class="banner-upload-text">
-                          <i class="fas fa-mobile-alt"></i>
-                          <strong>800 x 1000 px</strong>
-                          <span>Dikey oranlı bir görsel tercih ediniz.</span>
-                        </div>
-                        <img src="<?php if(!empty($veri[0]["resim_mobil"])) echo SITE.'../images/banner/'.$veri[0]["resim_mobil"]; ?>" alt="Mevcut mobil banner" class="banner-upload-image" />
-                      </div>
-                      <div class="custom-file mt-3">
-                        <input type="file" class="custom-file-input banner-upload-input" id="resim_mobil" name="resim_mobil" accept="image/*" data-preview-target="#mobileBannerPreviewEdit">
-                        <label class="custom-file-label" for="resim_mobil">Dosya seçiniz...</label>
-                      </div>
-                      <small class="form-text text-muted">Mobil için farklı bir görsel seçebilir veya mevcut görseli koruyabilirsiniz.</small>
+                  <div class="form-group col-md-6">
+                    <label for="resim_mobil">Mobil Banner Görseli <span class="text-danger">*</span></label>
+                    <?php if(!empty($veri[0]["resim_mobil"])): ?>
+                    <div class="mb-3">
+                      <img src="<?=SITE?>../images/banner/<?=$veri[0]["resim_mobil"]?>" alt="Mevcut mobil banner" class="img-fluid border" style="max-height: 180px;">
                     </div>
+                    <?php endif; ?>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="resim_mobil" name="resim_mobil" accept="image/*">
+                      <label class="custom-file-label" for="resim_mobil">Dosya seçiniz...</label>
+                    </div>
+                    <small class="form-text text-muted">Mobil için farklı bir görsel yüklemediğinizde mevcut görsel korunur.</small>
                   </div>
                  </div>
 
@@ -236,185 +220,11 @@ if(!empty($_GET["ID"]))
          </div>
        </div>
 
-       <style>
-         /* Gül Kurusu Renk Paleti */
-         :root {
-           --rose-50: #fff1f2;
-           --rose-100: #ffe4e6;
-           --rose-200: #fecdd3;
-           --rose-300: #fda4af;
-           --rose-400: #fb7185;
-           --rose-500: #f43f5e;
-           --rose-600: #e11d48;
-           --rose-700: #be123c;
-           --rose-800: #9f1239;
-           --rose-900: #881337;
-         }
-
-         .card {
-           border-radius: 0.25rem;
-           box-shadow: 0 4px 12px rgba(244, 63, 94, 0.15);
-           transition: all 0.3s ease;
-         }
-
-         .card:hover {
-           box-shadow: 0 6px 16px rgba(244, 63, 94, 0.25);
-         }
-
-         .card-header {
-           background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
-           border-bottom: 2px solid #fecdd3;
-           color: #9f1239;
-           font-weight: 600;
-         }
-
-         .btn-primary {
-           background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
-           border: none;
-           color: white;
-           transition: all 0.3s ease;
-         }
-
-         .btn-primary:hover {
-           background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
-           transform: translateY(-2px);
-           box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
-         }
-
-         .btn-outline-primary {
-           color: #f43f5e;
-           border-color: #f43f5e;
-         }
-
-         .btn-outline-primary:hover {
-           background-color: #f43f5e;
-           border-color: #f43f5e;
-           color: white;
-         }
-
-         .alert-success {
-           background: #ffe4e6;
-           border-color: #fda4af;
-           color: #be123c;
-         }
-
-         .custom-file-label::after {
-           background-color: #f43f5e;
-           color: white;
-         }
-
-         .badge-required {
-           background: rgba(244, 63, 94, 0.1);
-           color: #be123c;
-           font-weight: 600;
-           border: 1px solid rgba(244, 63, 94, 0.35);
-         }
-
-         .banner-upload-group {
-           margin-bottom: 2rem;
-         }
-
-         .banner-upload-zone {
-           position: relative;
-           border: 2px dashed rgba(244, 63, 94, 0.45);
-           border-radius: 1rem;
-           padding: 2rem 1.25rem;
-           background: rgba(255, 241, 242, 0.65);
-           text-align: center;
-           min-height: 220px;
-           display: flex;
-           justify-content: center;
-           align-items: center;
-           transition: all 0.3s ease;
-           overflow: hidden;
-         }
-
-         .banner-upload-zone:hover {
-           border-color: #f43f5e;
-           background: rgba(255, 228, 230, 0.6);
-           box-shadow: inset 0 0 0 1px rgba(244, 63, 94, 0.1);
-         }
-
-         .banner-upload-zone .banner-upload-text {
-           color: #9f1239;
-           display: flex;
-           flex-direction: column;
-           gap: 0.5rem;
-           align-items: center;
-           font-size: 0.95rem;
-           font-weight: 500;
-         }
-
-         .banner-upload-zone .banner-upload-text i {
-           font-size: 2.5rem;
-           color: #f43f5e;
-         }
-
-         .banner-upload-image {
-           display: none;
-           max-width: 100%;
-           border-radius: 0.75rem;
-           box-shadow: 0 10px 30px rgba(244, 63, 94, 0.2);
-         }
-
-         .banner-upload-zone.has-image {
-           border-style: solid;
-           border-color: rgba(244, 63, 94, 0.4);
-           background: white;
-         }
-
-         .banner-upload-zone.has-image .banner-upload-text {
-           display: none;
-         }
-
-         .banner-upload-zone.has-image .banner-upload-image {
-           display: block;
-         }
-
-         label {
-           color: #9f1239;
-           font-weight: 500;
-         }
-       </style>
-
        <script>
        $(document).ready(function() {
-         function updateBannerPreview(input) {
-           var targetSelector = $(input).data('preview-target');
-           if (!targetSelector) { return; }
-
-           var $zone = $(targetSelector);
-           if (!$zone.length) { return; }
-
-           var $image = $zone.find('.banner-upload-image');
-
-           if (input.files && input.files[0]) {
-             var reader = new FileReader();
-             reader.onload = function(e) {
-               $zone.addClass('has-image');
-               $image.attr('src', e.target.result);
-             };
-             reader.readAsDataURL(input.files[0]);
-           } else {
-             $zone.removeClass('has-image');
-             $image.attr('src', '');
-           }
-         }
-
-         $('.banner-upload-zone').each(function() {
-           var $image = $(this).find('.banner-upload-image');
-           if ($image.attr('src')) {
-             $(this).addClass('has-image');
-           }
-         });
-
          $('.custom-file-input').on('change', function() {
            var fileName = $(this).val().split('\\').pop();
-           $(this).next('.custom-file-label').html(fileName || 'Dosya seçiniz...');
-         });
-
-         $('.banner-upload-input').on('change', function() {
-           updateBannerPreview(this);
+           $(this).next('.custom-file-label').text(fileName || 'Dosya seçiniz...');
          });
        });
        </script>
