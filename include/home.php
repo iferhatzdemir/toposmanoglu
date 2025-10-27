@@ -840,6 +840,37 @@
         }
     }
 
+    .video-hero {
+        position: relative;
+        overflow: hidden;
+        background-color: #000;
+    }
+
+    .video-hero .video-background {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
+
+    .video-hero .video-background .video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .video-hero .video-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1;
+    }
+
+    .video-hero .container {
+        position: relative;
+        z-index: 2;
+    }
+
     /* Nasıl Çalışır - Modern Steps */
     .ozgida-steps-list {
         display: flex;
@@ -957,7 +988,14 @@
     <!--==============================
     CTA Wrapper
     ==============================-->
-    <section class=" space-top sec-bg7" data-bg-src="assets/img/bg/cat-bg-4584.jpg">
+    <section class=" space-top sec-bg7 video-hero">
+        <div class="video-background">
+            <!-- Video dosyasını assets/video/hero-video.mp4 yoluna ekleyerek arka planı güncelleyebilirsiniz. -->
+            <video class="video" autoplay muted loop playsinline poster="assets/img/bg/cat-bg-4584.jpg">
+                <source src="assets/video/hero-video.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="video-overlay"></div>
         <div class="container text-center">
             <span class="sub-title4 text-white">%100 Doğal ve Geleneksel</span>
             <h2 class="sec-title3 text-color2">Özgıda Toposmanoğlu</h2>
