@@ -238,6 +238,7 @@
         targetSrc = setIntroVideoSource(defaultVideoSource);
       }
 
+      var targetSrc = $iframe.data('src');
       var currentSrc = $iframe.attr('src');
 
       if (targetSrc && currentSrc !== targetSrc) {
@@ -624,6 +625,10 @@
   $(function () {
     initOzgidaHeroSlider();
   });
+
+
+
+  /*---------- 03. Mobile Menu Active ----------*/
 
 
 

@@ -298,6 +298,7 @@
                 $altText = !empty($title) ? $title : "Özgıda Toposmanoğlu Bannerı";
                 ?>
                 <div class="ozgida-slide <?=$isActive?>" data-slide="<?=$index?>" role="group" aria-roledescription="slide" aria-label="<?=($index + 1)?> / <?=$bannerCount?>" aria-hidden="<?=$isActive ? 'false' : 'true'?>">
+                <div class="ozgida-slide <?=$isActive?>" data-slide="<?=$index?>">
                     <picture class="ozgida-slide-bg">
                         <source srcset="<?=$mobileImage?>" media="(max-width: 991px)">
                         <img src="<?=$image?>" alt="<?=$altText?>" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
@@ -325,6 +326,7 @@
         } else {
             ?>
             <div class="ozgida-slide active" role="group" aria-roledescription="slide" aria-label="1 / 1" aria-hidden="false">
+            <div class="ozgida-slide active">
                 <picture class="ozgida-slide-bg">
                     <source srcset="<?=SITE?>img/hero/hero-bg-7-1.jpg" media="(max-width: 991px)">
                     <img src="<?=SITE?>img/hero/hero-bg-7-1.jpg" alt="Özgıda Toposmanoğlu">
@@ -453,7 +455,7 @@
                 <div class="col-lg-6 col-xl-7">
                     <div class="video-box">
                         <img src="assets/img/video/video-1-1.jpg" alt="Video image">
-                        <a href="<?=htmlspecialchars($introVideoUrl, ENT_QUOTES, 'UTF-8')?>" class="play-btn style2 popup-video" data-intro-video-open="true" data-intro-video-src="<?=htmlspecialchars($introVideoEmbedAutoplay, ENT_QUOTES, 'UTF-8')?>"><i class="fas fa-play"></i></a>
+                        <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video" data-intro-video-open="true"><i class="fas fa-play"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-xl-5">

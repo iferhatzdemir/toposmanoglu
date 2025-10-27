@@ -243,6 +243,7 @@ $introVideoEmbedAutoplay = $introVideoSources['autoplay'] !== '' ? $introVideoSo
         Intro Video Modal
     ============================== -->
     <div id="introVideoModal" class="video-modal" aria-hidden="true" data-default-video="<?=htmlspecialchars($introVideoEmbedAutoplay, ENT_QUOTES, 'UTF-8')?>">
+    <div id="introVideoModal" class="video-modal" aria-hidden="true">
         <div class="video-modal__overlay" data-video-modal-close></div>
         <div class="video-modal__content" role="dialog" aria-modal="true" aria-label="<?=$sitebaslik?> Tanıtım Videosu">
             <button class="video-modal__close" type="button" data-video-modal-close aria-label="Videoyu kapat">
@@ -255,6 +256,7 @@ $introVideoEmbedAutoplay = $introVideoSources['autoplay'] !== '' ? $introVideoSo
             <div class="video-modal__body">
                 <div class="video-modal__media">
                     <iframe data-src="<?=htmlspecialchars($introVideoEmbedAutoplay, ENT_QUOTES, 'UTF-8')?>" title="<?=$sitebaslik?> Tanıtım Videosu" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe data-src="https://www.youtube.com/embed/_sI_Ps7JSEk?autoplay=1&amp;mute=1&amp;rel=0&amp;showinfo=0" title="<?=$sitebaslik?> Tanıtım Videosu" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <p class="video-modal__description">Organik ürünlerle hazırlanan menümüzü tanıtım videomuzla keşfedin ve çiftlikten sofraya uzanan hikâyemize ortak olun.</p>
             </div>

@@ -39,7 +39,7 @@ if(!empty($_GET["ID"]))
                           $sirano=$VT->filter($_POST["sirano"]);
 
         $eskiMasaustu = $veri[0]["resim"];
-        $eskiMobil = $veri[0]["resim_mobil"];
+        $eskiMobil = !empty($veri[0]["resim_mobil"]) ? $veri[0]["resim_mobil"] : $veri[0]["resim"];
         $masaustuResim = $eskiMasaustu;
         $mobilResim = $eskiMobil;
         $hata=false;
@@ -93,6 +93,14 @@ if(!empty($_GET["ID"]))
                     </button>
                   </div>
                   <?php
+         }
+        }
+
+        if(!$hata && !$mobilYenilendi)
+        {
+         if(empty($eskiMobil) || $eskiMobil==$eskiMasaustu)
+         {
+          $mobilResim=$masaustuResim;
          }
         }
 
@@ -170,44 +178,36 @@ if(!empty($_GET["ID"]))
                    <input type="text" class="form-control" id="url" placeholder="https://ornek.com" name="url" value="<?=$veri[0]["url"]?>">
                  </div>
 
-                <hr class="my-4">
+                 <hr class="my-4">
 
-                 <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="resim">Masaüstü Banner Görseli <span class="text-danger">*</span></label>
-                    <div class="banner-upload-card">
-                      <?php
-                      $masaustuResimYolu = !empty($veri[0]["resim"]) ? SITE."../images/banner/".$veri[0]["resim"] : '';
-                      $masaustuClass = !empty($veri[0]["resim"]) ? 'banner-preview has-image' : 'banner-preview';
-                      ?>
-                      <div class="<?=$masaustuClass?>" id="preview-desktop" data-original="<?=!empty($masaustuResimYolu) ? htmlspecialchars($masaustuResimYolu, ENT_QUOTES, 'UTF-8') : ''?>"<?php if(!empty($masaustuResimYolu)): ?> style="background-image: url('<?=$masaustuResimYolu?>');"<?php endif; ?>>
-                        <span class="banner-preview-text">1920x700 piksel önerilir</span>
-                      </div>
-                      <div class="custom-file mt-3">
-                        <input type="file" class="custom-file-input" id="resim" name="resim" accept="image/*">
-                        <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
-                      </div>
-                      <small class="form-text text-muted">Yeni dosya seçmezseniz mevcut masaüstü görseli korunur.</small>
-                    </div>
+                 <div class="form-group">
+                  <label for="resim">Masaüstü Banner Resmi</label>
+                  <?php if(!empty($veri[0]["resim"])): ?>
+                  <div class="mb-3">
+                    <img src="<?=SITE?>../images/banner/<?=$veri[0]["resim"]?>" alt="Mevcut masaüstü banner" style="max-width: 200px; border: 1px solid #fecdd3; border-radius: 0.25rem;">
+                    <p class="text-sm text-muted mt-2">Mevcut masaüstü banner resmi</p>
                   </div>
+                  <?php endif; ?>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="resim" name="resim" accept="image/*">
+                    <label class="custom-file-label" for="resim">Dosya seçiniz...</label>
+                  </div>
+                  <small class="form-text text-muted">Yeni resim seçmezseniz mevcut masaüstü görseli korunur</small>
+                 </div>
 
-                  <div class="form-group col-md-6">
-                    <label for="resim_mobil">Mobil Banner Görseli <span class="text-danger">*</span></label>
-                    <div class="banner-upload-card">
-                      <?php
-                      $mobilResimYolu = !empty($veri[0]["resim_mobil"]) ? SITE."../images/banner/".$veri[0]["resim_mobil"] : '';
-                      $mobilClass = !empty($veri[0]["resim_mobil"]) ? 'banner-preview has-image' : 'banner-preview';
-                      ?>
-                      <div class="<?=$mobilClass?>" id="preview-mobile" data-original="<?=!empty($mobilResimYolu) ? htmlspecialchars($mobilResimYolu, ENT_QUOTES, 'UTF-8') : ''?>"<?php if(!empty($mobilResimYolu)): ?> style="background-image: url('<?=$mobilResimYolu?>');"<?php endif; ?>>
-                        <span class="banner-preview-text">800x1000 piksel önerilir</span>
-                      </div>
-                      <div class="custom-file mt-3">
-                        <input type="file" class="custom-file-input" id="resim_mobil" name="resim_mobil" accept="image/*">
-                        <label class="custom-file-label" for="resim_mobil">Dosya seçiniz...</label>
-                      </div>
-                      <small class="form-text text-muted">Mobil için farklı bir görsel yüklemediğinizde mevcut görsel korunur.</small>
-                    </div>
+                 <div class="form-group">
+                  <label for="resim_mobil">Mobil Banner Resmi</label>
+                  <?php if(!empty($veri[0]["resim_mobil"])): ?>
+                  <div class="mb-3">
+                    <img src="<?=SITE?>../images/banner/<?=$veri[0]["resim_mobil"]?>" alt="Mevcut mobil banner" style="max-width: 200px; border: 1px solid #fecdd3; border-radius: 0.25rem;">
+                    <p class="text-sm text-muted mt-2">Mevcut mobil banner resmi</p>
                   </div>
+                  <?php endif; ?>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="resim_mobil" name="resim_mobil" accept="image/*">
+                    <label class="custom-file-label" for="resim_mobil">Dosya seçiniz...</label>
+                  </div>
+                  <small class="form-text text-muted">Mobil için farklı bir görsel seçebilirsiniz. Boş bırakırsanız mevcut görsel korunur.</small>
                  </div>
 
                  <div class="form-group">
@@ -229,90 +229,84 @@ if(!empty($_GET["ID"]))
        </div>
 
        <style>
-         .banner-upload-card {
-           border: 1px dashed #fecdd3;
-           border-radius: 0.75rem;
-           padding: 1.5rem;
-           background: linear-gradient(135deg, rgba(255, 241, 242, 0.6), rgba(255, 228, 230, 0.6));
-           transition: border-color 0.3s ease, box-shadow 0.3s ease;
+         /* Gül Kurusu Renk Paleti */
+         :root {
+           --rose-50: #fff1f2;
+           --rose-100: #ffe4e6;
+           --rose-200: #fecdd3;
+           --rose-300: #fda4af;
+           --rose-400: #fb7185;
+           --rose-500: #f43f5e;
+           --rose-600: #e11d48;
+           --rose-700: #be123c;
+           --rose-800: #9f1239;
+           --rose-900: #881337;
          }
 
-         .banner-upload-card:hover {
-           border-color: #fda4af;
-           box-shadow: 0 8px 20px rgba(244, 63, 94, 0.12);
+         .card {
+           border-radius: 0.25rem;
+           box-shadow: 0 4px 12px rgba(244, 63, 94, 0.15);
+           transition: all 0.3s ease;
          }
 
-         .banner-preview {
-           position: relative;
-           width: 100%;
-           padding-top: 55%;
-           border-radius: 0.75rem;
-           background-color: rgba(255, 255, 255, 0.65);
-           background-size: cover;
-           background-position: center;
-           display: flex;
-           align-items: center;
-           justify-content: center;
+         .card:hover {
+           box-shadow: 0 6px 16px rgba(244, 63, 94, 0.25);
+         }
+
+         .card-header {
+           background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+           border-bottom: 2px solid #fecdd3;
            color: #9f1239;
            font-weight: 600;
-           text-align: center;
-           overflow: hidden;
-           border: 1px solid rgba(244, 63, 94, 0.25);
          }
 
-         .banner-preview.has-image {
-           color: transparent;
-           border-color: rgba(244, 63, 94, 0.35);
-           background-color: rgba(255, 255, 255, 0.9);
+         .btn-primary {
+           background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+           border: none;
+           color: white;
+           transition: all 0.3s ease;
          }
 
-         .banner-preview-text {
-           padding: 0 1rem;
+         .btn-primary:hover {
+           background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+           transform: translateY(-2px);
+           box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
          }
 
-         @media (max-width: 767.98px) {
-           .banner-upload-card {
-             margin-bottom: 1.5rem;
-           }
+         .btn-outline-primary {
+           color: #f43f5e;
+           border-color: #f43f5e;
+         }
+
+         .btn-outline-primary:hover {
+           background-color: #f43f5e;
+           border-color: #f43f5e;
+           color: white;
+         }
+
+         .alert-success {
+           background: #ffe4e6;
+           border-color: #fda4af;
+           color: #be123c;
+         }
+
+         .custom-file-label::after {
+           background-color: #f43f5e;
+           color: white;
+         }
+
+         label {
+           color: #9f1239;
+           font-weight: 500;
          }
        </style>
 
        <script>
-       function updatePreview(input, previewId) {
-         var preview = document.getElementById(previewId);
-         if(!preview) { return; }
-
-         if(input.files && input.files[0]) {
-           var reader = new FileReader();
-           reader.onload = function(e) {
-             preview.style.backgroundImage = 'url(' + e.target.result + ')';
-             preview.classList.add('has-image');
-           };
-           reader.readAsDataURL(input.files[0]);
-         } else {
-           var original = preview.getAttribute('data-original');
-           if(original) {
-             preview.style.backgroundImage = 'url(' + original + ')';
-             preview.classList.add('has-image');
-           } else {
-             preview.style.backgroundImage = '';
-             preview.classList.remove('has-image');
-           }
-         }
-       }
-
        $(document).ready(function() {
+         // Custom file input
          $('.custom-file-input').on('change', function() {
            var fileName = $(this).val().split('\\').pop();
-           $(this).next('.custom-file-label').text(fileName || 'Dosya seçiniz...');
-         });
-
-         $('#resim').on('change', function() {
-           updatePreview(this, 'preview-desktop');
-         });
-
-         $('#resim_mobil').on('change', function() {
-           updatePreview(this, 'preview-mobile');
+           $(this).next('.custom-file-label').html(fileName);
          });
        });
        </script>
