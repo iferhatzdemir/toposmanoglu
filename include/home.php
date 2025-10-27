@@ -265,23 +265,26 @@
         if($hasBanners) {
             foreach($banners as $index => $banner) {
                 $isActive = ($index === 0) ? 'active' : '';
-                $title = stripslashes($banner["baslik"]);
+                $title = !empty($banner["baslik"]) ? stripslashes($banner["baslik"]) : "";
                 $desc = !empty($banner["aciklama"]) ? stripslashes($banner["aciklama"]) : "";
                 $btnText = !empty($banner["butontext"]) ? stripslashes($banner["butontext"]) : "Alışverişe Başla";
                 $link = !empty($banner["link"]) ? $banner["link"] : SITE . "urunler";
                 $image = SITE . "images/banner/" . $banner["resim"];
                 $mobileImage = !empty($banner["resim_mobil"]) ? SITE . "images/banner/" . $banner["resim_mobil"] : $image;
+                $altText = !empty($title) ? $title : "Özgıda Toposmanoğlu Bannerı";
                 ?>
                 <div class="ozgida-slide <?=$isActive?>" data-slide="<?=$index?>">
                     <picture class="ozgida-slide-bg">
                         <source srcset="<?=$mobileImage?>" media="(max-width: 991px)">
-                        <img src="<?=$image?>" alt="<?=$title?>" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
+                        <img src="<?=$image?>" alt="<?=$altText?>" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
                     </picture>
 
                     <div class="ozgida-slide-content">
                         <div class="container">
                             <div class="ozgida-slide-inner">
-                                <h1 class="ozgida-slide-title"><?=$title?></h1>
+                                <?php if(!empty($title)): ?>
+                                    <h1 class="ozgida-slide-title"><?=$title?></h1>
+                                <?php endif; ?>
                                 <?php if(!empty($desc)): ?>
                                     <p class="ozgida-slide-desc"><?=$desc?></p>
                                 <?php endif; ?>

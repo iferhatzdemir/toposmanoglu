@@ -23,7 +23,6 @@
 	   if($_POST)
 	   {
           if(
-            !empty($_POST["baslik"]) &&
             !empty($_POST["sirano"]) &&
             !empty($_FILES["resim"]["name"]) &&
             !empty($_FILES["resim_mobil"]["name"])

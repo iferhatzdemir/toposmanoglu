@@ -31,7 +31,7 @@ if(!empty($_GET["ID"]))
        <?php
           if($_POST)
           {
-                  if(!empty($_POST["baslik"]) && !empty($_POST["sirano"]))
+                  if(!empty($_POST["sirano"]))
                   {
                           $baslik=$VT->filter($_POST["baslik"]);
         $aciklama=$VT->filter($_POST["aciklama"]);
@@ -142,17 +142,17 @@ if(!empty($_GET["ID"]))
                    <?php
 			   }
 		   }
-		   else
-		   {
-			   ?>
-               <div class="alert alert-danger alert-dismissible fade show">
-                 <strong>Uyarı!</strong> Boş bıraktığınız alanları doldurunuz.
-                 <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
-                   <span aria-hidden="true">&times;</span>
-                 </button>
-               </div>
-               <?php
-		   }
+                  else
+                  {
+                          ?>
+              <div class="alert alert-danger alert-dismissible fade show">
+                <strong>Uyarı!</strong> Sıra numarası alanını doldurunuz.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <?php
+                  }
 	   }
 	   ?>
        <div class="row">
