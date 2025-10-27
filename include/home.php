@@ -539,7 +539,7 @@
                 <div class="col-lg-6 col-xl-7">
                     <div class="video-box">
                         <img src="assets/img/video/video-1-1.jpg" alt="Video image">
-                        <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video"><i class="fas fa-play"></i></a>
+                        <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video" data-intro-video-open="true"><i class="fas fa-play"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-xl-5">
