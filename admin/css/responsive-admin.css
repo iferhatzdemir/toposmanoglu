@@ -1,0 +1,574 @@
+/* Admin Panel Responsive CSS */
+
+/* ===== GENEL RESPONSIVE KURALLAR ===== */
+@media (max-width: 991.98px) {
+    /* Sidebar menü mobilde auto-collapse */
+    .main-sidebar {
+        margin-left: -250px !important;
+    }
+
+    body.sidebar-open .main-sidebar {
+        margin-left: 0 !important;
+    }
+
+    /* Content wrapper padding */
+    .content-wrapper {
+        margin-left: 0 !important;
+        padding: 15px 10px;
+    }
+
+    /* Header responsive */
+    .main-header .navbar {
+        padding: 0.5rem 1rem;
+    }
+
+    /* Breadcrumb responsive */
+    .breadcrumb {
+        font-size: 0.875rem;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* ===== TABLET VE MOBİL ===== */
+
+    /* Content header */
+    .content-header h1 {
+        font-size: 1.5rem !important;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Card başlıkları */
+    .card-title {
+        font-size: 1.1rem !important;
+    }
+
+    /* Button grupları */
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    /* Badge'ler */
+    .badge {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    /* ===== MOBİL TELEFON ===== */
+
+    /* Ana container */
+    .container-fluid {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    /* Content wrapper */
+    .content-wrapper {
+        padding: 10px 5px;
+    }
+
+    /* Card'lar */
+    .card {
+        margin-bottom: 1rem;
+        border-radius: 0.25rem;
+    }
+
+    .card-body {
+        padding: 0.75rem;
+    }
+
+    /* Row spacing */
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .col-md-6, .col-md-4, .col-md-3, .col-md-8, .col-md-12,
+    .col-sm-6, .col-sm-4, .col-sm-3, .col-sm-8, .col-sm-12 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+/* ===== TABLO RESPONSIVE KURALLARI ===== */
+@media (max-width: 991.98px) {
+    /* Tablo container */
+    .table-responsive {
+        border: none;
+        margin-bottom: 1rem;
+    }
+
+    /* DataTables responsive */
+    .dataTables_wrapper {
+        overflow-x: auto;
+    }
+
+    /* Tablo başlıkları */
+    .table th, .table td {
+        white-space: nowrap;
+        font-size: 0.875rem;
+    }
+
+    /* Pagination */
+    .dataTables_paginate {
+        text-align: center !important;
+        margin-top: 1rem;
+    }
+
+    .dataTables_info {
+        text-align: center !important;
+        margin-bottom: 0.5rem;
+    }
+
+    .dataTables_length {
+        text-align: center !important;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* Mobil tablo görünümü */
+    .table-responsive table {
+        min-width: auto !important;
+    }
+
+    /* Küçük ekranlarda sütun gizleme */
+    .table .d-none-mobile {
+        display: none !important;
+    }
+
+    /* Tablo hücreleri */
+    .table th, .table td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.8rem;
+        vertical-align: middle;
+    }
+
+    /* İşlem butonları */
+    .btn-group-sm .btn {
+        padding: 0.2rem 0.3rem;
+        margin: 0.1rem;
+    }
+
+    /* Checkbox'lar */
+    input[type="checkbox"] {
+        transform: scale(1.2);
+        margin: 0.2rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    /* Çok küçük ekranlar için tablo */
+    .table th, .table td {
+        padding: 0.375rem 0.2rem;
+        font-size: 0.75rem;
+    }
+
+    /* Resimler */
+    .table img {
+        max-width: 30px !important;
+        max-height: 30px !important;
+    }
+
+    /* Uzun metinler */
+    .table .text-truncate {
+        max-width: 80px;
+    }
+}
+
+/* ===== MODAL RESPONSIVE KURALLARI ===== */
+@media (max-width: 991.98px) {
+    .modal-lg {
+        max-width: 90% !important;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .modal-title {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem) !important;
+    }
+
+    .modal-body {
+        padding: 0.75rem;
+    }
+
+    /* Modal içi kartlar */
+    .modal .card-body {
+        padding: 0.5rem;
+    }
+
+    .modal .row [class*="col-"] {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Modal resimler */
+    .modal img {
+        max-width: 60px !important;
+        max-height: 60px !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    /* Mobil modal tam ekran */
+    .modal-dialog {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        max-width: 100% !important;
+    }
+
+    .modal-content {
+        height: 100%;
+        border: none;
+        border-radius: 0;
+    }
+
+    .modal-body {
+        overflow-y: auto;
+        padding: 0.5rem;
+    }
+}
+
+/* ===== YORUM SİSTEMİ RESPONSIVE ===== */
+@media (max-width: 991.98px) {
+    /* Yorum kartları */
+    .yorumlar .card {
+        margin-bottom: 0.75rem;
+    }
+
+    /* Yıldız puanları */
+    .yildizlar i {
+        font-size: 0.9rem;
+        margin: 0 1px;
+    }
+
+    /* Yorum metinleri */
+    .yorum-metin {
+        font-size: 0.875rem;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* Müşteri bilgileri */
+    .musteri-bilgi {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .musteri-bilgi img {
+        width: 50px !important;
+        height: 50px !important;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Ürün bilgileri */
+    .urun-bilgi img {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .urun-bilgi .urun-baslik {
+        font-size: 0.875rem;
+        display: block;
+        margin-top: 0.25rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    /* Çok küçük ekranlar */
+    .yorum-card .row [class*="col-"] {
+        text-align: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .yorum-detay .card {
+        margin-bottom: 0.5rem;
+    }
+
+    .yorum-detay .card-body {
+        padding: 0.5rem;
+    }
+}
+
+/* ===== TESTİMONİALS RESPONSIVE ===== */
+@media (max-width: 991.98px) {
+    /* Testimonial kartları */
+    .testimonial-card {
+        margin-bottom: 0.75rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Onay durumu badge'leri */
+    .onay-durumu .badge {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* Testimonial responsive görünüm */
+    .testimonial-responsive {
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        background: #fff;
+    }
+
+    .testimonial-responsive .testimonial-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .testimonial-responsive .testimonial-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 0.75rem;
+        object-fit: cover;
+    }
+
+    .testimonial-responsive .testimonial-info h6 {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    .testimonial-responsive .testimonial-meta {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin: 0;
+    }
+
+    .testimonial-responsive .testimonial-content {
+        margin-bottom: 0.75rem;
+    }
+
+    .testimonial-responsive .testimonial-yorum {
+        font-size: 0.875rem;
+        line-height: 1.4;
+        margin-bottom: 0.5rem;
+        color: #495057;
+    }
+
+    .testimonial-responsive .testimonial-rating {
+        margin-bottom: 0.5rem;
+    }
+
+    .testimonial-responsive .testimonial-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .testimonial-responsive .testimonial-badges {
+        display: flex;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+    }
+
+    .testimonial-responsive .testimonial-actions {
+        display: flex;
+        gap: 0.25rem;
+    }
+}
+
+/* ===== FORM RESPONSIVE KURALLARI ===== */
+@media (max-width: 767.98px) {
+    /* Form grupları */
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    /* Label'lar */
+    .form-label, label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Button'lar */
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* ===== CARD TOOLS RESPONSIVE ===== */
+@media (max-width: 991.98px) {
+    .card-tools {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: flex-end;
+    }
+
+    .card-tools .btn {
+        font-size: 0.8rem;
+        padding: 0.375rem 0.75rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .card-tools {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+
+    .card-tools .btn {
+        flex: 1;
+        max-width: 150px;
+        margin: 0.125rem;
+    }
+}
+
+/* ===== SWEETALERT RESPONSIVE ===== */
+@media (max-width: 767.98px) {
+    .swal2-popup {
+        font-size: 0.875rem !important;
+        padding: 1rem !important;
+        margin: 0.5rem !important;
+        max-width: calc(100% - 1rem) !important;
+    }
+
+    .swal2-title {
+        font-size: 1.1rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .swal2-content {
+        font-size: 0.875rem !important;
+    }
+
+    .swal2-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .swal2-actions .swal2-styled {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+}
+
+/* ===== UTILITY CLASSES ===== */
+@media (max-width: 767.98px) {
+    .mobile-hide {
+        display: none !important;
+    }
+
+    .mobile-center {
+        text-align: center !important;
+    }
+
+    .mobile-full-width {
+        width: 100% !important;
+    }
+
+    .mobile-small-text {
+        font-size: 0.8rem !important;
+    }
+
+    .mobile-margin-bottom {
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* ===== MOBILE SWITCH COMPONENT ===== */
+.switch-mobile {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+    margin: 0 0.25rem;
+}
+
+.switch-mobile input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider-mobile {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider-mobile:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.switch-mobile input:checked + .slider-mobile {
+    background-color: #28a745;
+}
+
+.switch-mobile input:checked + .slider-mobile:before {
+    transform: translateX(14px);
+}
+
+/* ===== PRINT FRIENDLY ===== */
+@media print {
+    .sidebar, .main-header, .main-footer,
+    .card-tools, .btn, .pagination,
+    .modal, .sweetalert2-container {
+        display: none !important;
+    }
+
+    .content-wrapper {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .table {
+        font-size: 0.8rem;
+    }
+
+    .card {
+        border: 1px solid #000;
+        break-inside: avoid;
+    }
+}

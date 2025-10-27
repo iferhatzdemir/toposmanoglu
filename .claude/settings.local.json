@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/ferhat.ozdemir/Desktop/ss/**)",
+      "WebSearch",
+      "Bash(mysql:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(mysqlbinmysql.exe:*)",
+      "Read(//c/xampp/mysql/bin/**)",
+      "Bash(php:*)",
+      "Bash(C:xamppphpphp.exe -f test_data_runner.php)",
+      "Bash(/c/xampp/php/php.exe test_data_runner.php)",
+      "Bash(cat:*)",
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(/c/xampp/php/php.exe -l:*)",
+      "Bash(/c/xampp/php/php.exe:*)",
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE topwebsite; SELECT ID, baslik, tablo, seflink FROM kategoriler WHERE durum=1 ORDER BY ID ASC LIMIT 10;\")",
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE topwebsite; SELECT ID, baslik, kategori, seflink, durum FROM urunler ORDER BY ID ASC LIMIT 10;\")",
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE top; SELECT ID, baslik, tablo, seflink FROM kategoriler WHERE durum=1 ORDER BY ID ASC LIMIT 10;\")",
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE top; SELECT ID, baslik, kategori, seflink, durum FROM urunler ORDER BY ID ASC LIMIT 10;\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

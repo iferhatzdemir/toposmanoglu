@@ -1,0 +1,249 @@
+// =============================================================================
+// MIXINS
+// Utility mixins for responsive design, animations, and accessibility
+// =============================================================================
+
+// Breakpoint mixin with mobile-first approach
+@mixin breakpoint($size) {
+  @if map-has-key($breakpoints, $size) {
+    @media (min-width: map-get($breakpoints, $size)) {
+      @content;
+    }
+  } @else {
+    @error "Breakpoint '#{$size}' not found in $breakpoints map";
+  }
+}
+
+// Fluid typography with clamp()
+@mixin fluid-type($min-size, $max-size, $min-width: 320px, $max-width: 1200px) {
+  font-size: clamp(#{$min-size}, #{$min-size} + (#{strip-unit($max-size)} - #{strip-unit($min-size)}) * ((100vw - #{$min-width}) / (#{strip-unit($max-width)} - #{strip-unit($min-width)})), #{$max-size});
+}
+
+// Fluid spacing with clamp()
+@mixin clamp-space($property, $min-size, $max-size, $min-width: 320px, $max-width: 1200px) {
+  #{$property}: clamp(#{$min-size}, #{$min-size} + (#{strip-unit($max-size)} - #{strip-unit($min-size)}) * ((100vw - #{$min-width}) / (#{strip-unit($max-width)} - #{strip-unit($min-width)})), #{$max-size});
+}
+
+// Focus ring for accessibility
+@mixin focus-ring($color: map-get($colors, rose-500), $offset: 2px) {
+  &:focus-visible {
+    outline: 2px solid $color;
+    outline-offset: $offset;
+    border-radius: map-get($border-radius, sm);
+  }
+}
+
+// Motion-safe animations (respects prefers-reduced-motion)
+@mixin motion-safe($property, $value) {
+  @media (prefers-reduced-motion: no-preference) {
+    #{$property}: $value;
+  }
+}
+
+// Glass effect with backdrop filter
+@mixin glass-effect($bg: $glass-bg, $border: $glass-border) {
+  background: $bg;
+  border: 1px solid $border;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  
+  // Fallback for browsers without backdrop-filter support
+  @supports not (backdrop-filter: blur(6px)) {
+    background: rgba(255, 255, 255, 0.9);
+  }
+}
+
+// Dark mode glass effect
+@mixin glass-effect-dark($bg: $glass-bg-dark, $border: $glass-border-dark) {
+  background: $bg;
+  border: 1px solid $border;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  
+  // Fallback for browsers without backdrop-filter support
+  @supports not (backdrop-filter: blur(6px)) {
+    background: rgba(15, 23, 42, 0.9);
+  }
+}
+
+// Underline grow animation
+@mixin underline-grow($color: map-get($colors, rose-500), $thickness: 2px) {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: $thickness;
+    background: $color;
+    transform: translateX(-50%);
+    transition: width map-get($durations, normal) map-get($easings, ease-out);
+  }
+  
+  &:hover::after,
+  &:focus-visible::after {
+    width: 100%;
+  }
+}
+
+// Icon lift animation
+@mixin icon-lift($lift: 3px, $shadow: map-get($shadows, md)) {
+  transition: transform map-get($durations, fast) map-get($easings, ease-out),
+              box-shadow map-get($durations, fast) map-get($easings, ease-out);
+  
+  &:hover {
+    transform: translateY(-#{$lift});
+    box-shadow: $shadow;
+  }
+  
+  &:focus-visible {
+    @include focus-ring();
+  }
+}
+
+// Fade in animation
+@mixin fade-in($duration: map-get($durations, normal), $delay: 0s) {
+  opacity: 0;
+  animation: fadeIn $duration map-get($easings, ease-out) $delay forwards;
+}
+
+// Button hover gradient shift
+@mixin button-gradient-hover($from: map-get($colors, rose-400), $to: map-get($colors, rose-600)) {
+  background: linear-gradient(135deg, $from 0%, $to 100%);
+  transition: background map-get($durations, fast) map-get($easings, ease-out);
+  
+  &:hover {
+    background: linear-gradient(135deg, $to 0%, $from 100%);
+  }
+}
+
+// RTL support
+@mixin rtl($property, $ltr-value, $rtl-value) {
+  #{$property}: $ltr-value;
+  
+  :dir(rtl) & {
+    #{$property}: $rtl-value;
+  }
+}
+
+// Dark mode support
+@mixin dark-mode {
+  [data-theme="dark"] & {
+    @content;
+  }
+}
+
+// Color utility function
+@function color($name, $theme: 'light') {
+  @if $theme == 'dark' {
+    @return map-get($dark-mode-colors, $name);
+  } @else {
+    @return map-get($colors, $name);
+  }
+}
+
+// Spacing utility function
+@function spacing($size) {
+  @return map-get($spacing, $size);
+}
+
+// Font size utility function
+@function font-size($size) {
+  @return map-get($font-sizes, $size);
+}
+
+// Z-index utility function
+@function z-index($level) {
+  @return map-get($z-index, $level);
+}
+
+// Shadow utility function
+@function shadow($size) {
+  @return map-get($shadows, $size);
+}
+
+// Border radius utility function
+@function radius($size) {
+  @return map-get($border-radius, $size);
+}
+
+// Duration utility function
+@function duration($speed) {
+  @return map-get($durations, $speed);
+}
+
+// Easing utility function
+@function easing($type) {
+  @return map-get($easings, $type);
+}
+
+// Strip unit helper function
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+  @return $number;
+}
+
+// Keyframes for animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes underlineGrow {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes iconLift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes fadeInDivider {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+// Loading spinner animation
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Pulse animation for loading states
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

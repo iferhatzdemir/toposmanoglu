@@ -1,0 +1,313 @@
+/*
+ * Theme Integration Fixes
+ * Eski tema (header) ve Yeni tema (footer/home) uyumluluk düzeltmeleri
+ */
+
+/* ========================================
+   HEADER (OLD THEME) FIXES
+======================================== */
+
+/* Header background ve renk düzeltmeleri */
+header.version_1 {
+    background: #fff !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+header.version_1 .main_header {
+    background: #fff !important;
+    border-bottom: 1px solid #eee;
+}
+
+header.version_1 .main_nav {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Logo ve link renkleri */
+header.version_1 a {
+    color: #333 !important;
+}
+
+header.version_1 a:hover {
+    color: #E8B4B8 !important;
+}
+
+/* Menu renkleri */
+header.version_1 .main-menu ul li a {
+    color: #333 !important;
+}
+
+header.version_1 .main-menu ul li a:hover {
+    color: #E8B4B8 !important;
+}
+
+/* Submenu düzeltmeleri */
+header.version_1 .submenu ul {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+}
+
+header.version_1 .submenu ul li a {
+    color: #333 !important;
+    padding: 10px 15px !important;
+}
+
+header.version_1 .submenu ul li a:hover {
+    background: #f8f9fa !important;
+    color: #E8B4B8 !important;
+}
+
+/* Kategori menüsü */
+header.version_1 .categories ul {
+    background: #fff !important;
+}
+
+header.version_1 #menu {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+}
+
+header.version_1 #menu ul li a {
+    color: #333 !important;
+    padding: 10px 15px !important;
+}
+
+header.version_1 #menu ul li a:hover {
+    background: #f8f9fa !important;
+    color: #E8B4B8 !important;
+}
+
+/* Arama kutusu */
+header.version_1 .custom-search-input input {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    color: #333 !important;
+}
+
+header.version_1 .custom-search-input button {
+    background: #E8B4B8 !important;
+    color: #fff !important;
+}
+
+/* Sepet ikonu */
+header.version_1 .cart_bt {
+    background: #E8B4B8 !important;
+    color: #fff !important;
+    border-radius: 50%;
+    padding: 10px 15px !important;
+}
+
+header.version_1 .cart_bt:hover {
+    background: #D4A5A5 !important;
+}
+
+/* Dropdown menüler */
+header.version_1 .dropdown-menu {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+}
+
+header.version_1 .dropdown-menu a {
+    color: #333 !important;
+}
+
+header.version_1 .dropdown-menu a:hover {
+    background: #f8f9fa !important;
+}
+
+/* Butonlar */
+header.version_1 .btn_1 {
+    background: #E8B4B8 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 5px !important;
+}
+
+header.version_1 .btn_1:hover {
+    background: #D4A5A5 !important;
+}
+
+header.version_1 .btn_1.outline {
+    background: transparent !important;
+    color: #E8B4B8 !important;
+    border: 2px solid #E8B4B8 !important;
+}
+
+header.version_1 .btn_1.outline:hover {
+    background: #E8B4B8 !important;
+    color: #fff !important;
+}
+
+/* Top tools ikonları */
+header.version_1 .top_tools a {
+    color: #333 !important;
+}
+
+header.version_1 .top_tools a:hover {
+    color: #E8B4B8 !important;
+}
+
+/* ========================================
+   HERO SLIDER FIXES
+======================================== */
+
+/* Hero Slider visibility and sizing */
+.hero-layout7 {
+    position: relative;
+    min-height: 700px;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100%;
+}
+
+.vs-hero-carousel {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 700px;
+    position: relative;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.ls-slide {
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* LayerSlider skin fixes */
+#layerslider .ls-nav-prev,
+#layerslider .ls-nav-next {
+    display: block !important;
+}
+
+/* Hero section z-index */
+section.hero-layout7 {
+    z-index: 1;
+    margin-top: 0;
+}
+
+/* ========================================
+   FOOTER (NEW THEME) FIXES
+======================================== */
+
+/* Footer background */
+.footer-wrapper.footer-layout3 {
+    background: #1a1a1a !important;
+    color: #fff !important;
+}
+
+/* Newsletter bölümü */
+.newsletter-style3 {
+    background: #E8B4B8 !important;
+    padding: 40px 0 !important;
+}
+
+.newsletter-style3 .sub-title4 {
+    color: #fff !important;
+}
+
+.newsletter-style3 .form-title {
+    color: #fff !important;
+}
+
+.newsletter-style3 input.form-control {
+    background: #fff !important;
+    border: none !important;
+    color: #333 !important;
+}
+
+.newsletter-style3 .vs-btn {
+    background: #1a1a1a !important;
+    color: #fff !important;
+}
+
+.newsletter-style3 .vs-btn:hover {
+    background: #000 !important;
+}
+
+/* Footer widget başlıkları */
+.footer-widget .widget_title {
+    color: #fff !important;
+    font-weight: bold !important;
+    margin-bottom: 20px !important;
+}
+
+/* Footer linkler */
+.footer-widget a {
+    color: #ccc !important;
+    transition: all 0.3s ease;
+}
+
+.footer-widget a:hover {
+    color: #E8B4B8 !important;
+    padding-left: 5px;
+}
+
+/* Copyright alanı */
+.copyright-area {
+    background: #111 !important;
+    padding: 20px 0 !important;
+    border-top: 1px solid #333;
+}
+
+.copyright p {
+    color: #ccc !important;
+}
+
+.copyright a {
+    color: #E8B4B8 !important;
+}
+
+.copyright a:hover {
+    color: #fff !important;
+}
+
+/* Copyright social */
+.copyright-social a {
+    color: #ccc !important;
+    margin-left: 15px !important;
+}
+
+.copyright-social a:hover {
+    color: #E8B4B8 !important;
+}
+
+/* ========================================
+   GENEL DÜZELTMELER
+======================================== */
+
+/* Scroll to top butonu */
+.scrollToTop {
+    background: #E8B4B8 !important;
+    color: #fff !important;
+}
+
+.scrollToTop:hover {
+    background: #D4A5A5 !important;
+}
+
+/* Preloader */
+.preloader {
+    background: #fff !important;
+}
+
+/* Bootstrap çakışma düzeltmeleri */
+.container {
+    max-width: 1200px !important;
+}
+
+/* Responsive düzeltmeler */
+@media (max-width: 768px) {
+    header.version_1 .main_header,
+    header.version_1 .main_nav {
+        padding: 10px 0 !important;
+    }
+
+    .newsletter-style3 {
+        padding: 20px 0 !important;
+    }
+}

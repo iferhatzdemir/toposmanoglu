@@ -1,0 +1,151 @@
+/* Testimonials Enhancement CSS */
+
+/* Yıldız Rating Sistemi */
+.testi-rating {
+    margin-bottom: 8px;
+}
+
+.testi-rating i {
+    font-size: 14px;
+    margin-right: 2px;
+}
+
+.testi-rating .text-warning {
+    color: #ffc107 !important;
+}
+
+.testi-rating .text-muted {
+    color: #6c757d !important;
+}
+
+/* Testimonial Text Styling */
+.testi-text {
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #495057;
+}
+
+/* Testimonial Name Styling */
+.testi-name {
+    font-weight: 600;
+    color: #28a745;
+    margin-bottom: 5px;
+}
+
+/* Testimonial Meta Info */
+.testi-degi {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.testi-degi small {
+    font-size: 12px;
+}
+
+/* Date Styling */
+.testi-style1 small.text-muted {
+    font-size: 11px;
+    color: #9e9e9e !important;
+}
+
+.testi-style1 small.text-muted i {
+    margin-right: 4px;
+    font-size: 10px;
+}
+
+/* Google Link Styling */
+.testi-degi a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.testi-degi a:hover {
+    color: #007bff !important;
+    text-decoration: underline;
+}
+
+.testi-degi .fa-google {
+    color: #4285f4;
+    margin-right: 3px;
+}
+
+/* Carousel Navigation Improvements */
+.testi-slideTab .tab-btn {
+    border: 3px solid transparent;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.testi-slideTab .tab-btn:hover {
+    border-color: #28a745;
+    transform: scale(1.1);
+}
+
+.testi-slideTab .tab-btn.active {
+    border-color: #28a745;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+}
+
+/* Responsive Improvements */
+@media (max-width: 768px) {
+    .testi-rating i {
+        font-size: 12px;
+    }
+
+    .testi-text {
+        font-size: 14px;
+    }
+
+    .testi-name {
+        font-size: 16px;
+    }
+
+    .testi-degi {
+        font-size: 13px;
+    }
+
+    .testi-style1 small.text-muted {
+        font-size: 10px;
+    }
+}
+
+/* Animation for testimonial changes */
+.vs-carousel .slick-slide {
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Quote Icon Enhancement */
+.testi-quote img {
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.testi-style1:hover .testi-quote img {
+    opacity: 1;
+}
+
+/* Bottom Border for Visual Separation */
+.testi-bottom {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+/* Load Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.testi-style1 {
+    animation: fadeInUp 0.6s ease-out;
+}
