@@ -158,7 +158,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 70px;
+    height: 80px;
     gap: var(--space-3);
 }
 
@@ -233,7 +233,7 @@
 }
 
 .ecom-logo__img {
-    height: 35px !important;
+    height: 50px !important;
     width: auto !important;
     max-width: none !important;
     max-height: none !important;
@@ -901,11 +901,11 @@
 
     /* Adjust header height */
     .ecom-header__inner {
-        height: 60px;
+        height: 70px;
     }
 
     .ecom-logo__img {
-        height: 31px !important;
+        height: 42px !important;
         max-width: none !important;
         max-height: none !important;
     }

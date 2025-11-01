@@ -1,7 +1,7 @@
 <!--==============================
 Breadcumb
 ============================== -->
-<div class="breadcumb-wrapper breadcumb-layout1 bg-fluid pt-200 pb-200" data-bg-src="assets/img/breadcumb/breadcumb-img-1.jpg">
+<div class="breadcumb-wrapper breadcumb-layout1 bg-fluid pt-200 pb-200" data-bg-src="assets/img/bg/conct-bg.png">
 	<div class="container">
 		<div class="breadcumb-content text-center">
 			<h1 class="breadcumb-title">Iletisim</h1>
@@ -177,7 +177,7 @@ Breadcumb
 <!--==============================
 	Why Contact Us Section
 ==============================-->
-<section class="bg-light space-top space-bottom">
+<section class=" space-top space-bottom" style="backgroud-color:#FDEDEE !important">
 	<div class="container">
 		<div class="row align-items-center">
 			<div class="col-lg-6 mb-4 mb-lg-0">
@@ -214,7 +214,7 @@ Breadcumb
 			</div>
 			<div class="col-lg-6">
 				<div class="contact-image-wrapper">
-					<img src="<?=SITE?>assets/img/about/contact-support.jpg" alt="Iletisim" class="img-fluid rounded shadow-sm">
+					<img src="<?=SITE?>assets/img/contact/contact-img.jpg" alt="Iletisim" class="img-fluid rounded shadow-sm">
 				</div>
 			</div>
 		</div>

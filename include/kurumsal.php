@@ -9,7 +9,7 @@ if(!empty($_GET["seflink"]))
 		<!--==============================
 		Breadcumb
 		============================== -->
-		<div class="breadcumb-wrapper breadcumb-layout1 bg-fluid pt-200 pb-200" data-bg-src="assets/img/breadcumb/breadcumb-img-1.jpg">
+		<div class="breadcumb-wrapper breadcumb-layout1 bg-fluid pt-200 pb-200" data-bg-src="images/kurumsal/<?=$bilgi[0]["resim"]?>">
 			<div class="container">
 				<div class="breadcumb-content text-center">
 					<h1 class="breadcumb-title"><?=stripslashes($bilgi[0]["baslik"])?></h1>
@@ -66,7 +66,7 @@ if(!empty($_GET["seflink"]))
 								<div class="row">
 									<?php foreach($otherPages as $page) { ?>
 									<div class="col-md-6 mb-3">
-										<a href="<?=SITE?>sayfa/<?=$page["seflink"]?>" class="related-page-card">
+										<a href="<?=SITE?>kurumsal/<?=$page["seflink"]?>" class="related-page-card">
 											<div class="d-flex align-items-center">
 												<div class="related-icon">
 													<i class="far fa-file-alt"></i>
@@ -435,7 +435,7 @@ if(!empty($_GET["seflink"]))
 		<!--==============================
 		Breadcumb
 		============================== -->
-		<div class="breadcumb-wrapper breadcumb-layout1 bg-fluid pt-200 pb-200" data-bg-src="assets/img/breadcumb/breadcumb-img-1.jpg">
+		<div class="breadcumb-wrapper breadcumb-layout1 bg-fluid pt-200 pb-200" data-bg-src="assets/img/kurumsal/">
 			<div class="container">
 				<div class="breadcumb-content text-center">
 					<h1 class="breadcumb-title">Hata</h1>

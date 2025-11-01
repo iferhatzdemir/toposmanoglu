@@ -75,7 +75,7 @@ if(!empty($_GET["seflink"]))
 									</div>
 									<?php } ?>
 									<div class="col-sm-6 text-start text-md-end">
-										<span class="fs-xs fw-semibold text-title me-3">Social Network:</span>
+										<span class="fs-xs fw-semibold text-title me-3">Sosyal Medya:</span>
 										<ul class="blog-social list-unstyled">
 											<li><a class="facebook" href="#"><i class="fab fa-facebook-f"></i></a></li>
 											<li><a class="twitter" href="#"><i class="fab fa-twitter"></i></a></li>
@@ -93,7 +93,7 @@ if(!empty($_GET["seflink"]))
 						{
 						?>
 						<div class="related-post-wrapper pt-40">
-							<h2 class="inner-title1 h1">Related <span class="text-theme">Posts</span></h2>
+							<h2 class="inner-title1 h1">Diğer <span class="text-theme">Bloglarımız</span></h2>
 							<div class="row text-center vs-carousel" data-slide-show="3" data-lg-slide-show="2">
 								<?php foreach($ilgili_bloglar as $ilgili) { ?>
 								<div class="col-lg-4">
@@ -119,7 +119,7 @@ if(!empty($_GET["seflink"]))
 					<div class="col-lg-4 col-xl-3">
 						<aside class="sidebar-area sticky-sidebar">
 							<div class="widget widget_search">
-								<h3 class="widget_title">Search</h3>
+								<h3 class="widget_title">Arama</h3>
 								<form class="search-form" action="<?=SITE?>" method="get">
 									<input type="hidden" name="sayfa" value="blog">
 									<input type="text" name="q" placeholder="Search">
@@ -133,7 +133,7 @@ if(!empty($_GET["seflink"]))
 							{
 							?>
 							<div class="widget">
-								<h3 class="widget_title">Latest Posts</h3>
+								<h3 class="widget_title">Son Bloglar</h3>
 								<div class="vs-widget-recent-post">
 									<?php foreach($son_bloglar as $son) { ?>
 									<div class="recent-post d-flex align-items-center">

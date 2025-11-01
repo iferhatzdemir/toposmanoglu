@@ -6,7 +6,7 @@
     .ozgida-hero-slider {
         position: relative;
         width: 100%;
-        min-height: 600px;
+        aspect-ratio: 16 / 9; /* Desktop: 1920x1080 (16:9) */
         overflow: hidden;
         background: linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);
     }
@@ -34,6 +34,20 @@
         height: 100%;
         object-fit: cover;
         animation: kenBurns 15s ease-out infinite alternate;
+    }
+
+    /* Video Background - No Ken Burns effect */
+    .ozgida-video-bg {
+        animation: none;
+    }
+
+    /* Video controls hidden */
+    .ozgida-video-bg::-webkit-media-controls {
+        display: none !important;
+    }
+
+    .ozgida-video-bg::-webkit-media-controls-enclosure {
+        display: none !important;
     }
 
     @keyframes kenBurns {
@@ -198,7 +212,6 @@
     }
 
     @media (max-width: 992px) {
-        .ozgida-hero-slider { min-height: 500px; }
         .ozgida-slide-title { font-size: 2.5rem; }
         .ozgida-slide-desc { font-size: 1.125rem; }
         .ozgida-slide-inner { max-width: 100%; padding: 2rem; }
@@ -209,7 +222,7 @@
     }
 
     @media (max-width: 768px) {
-        .ozgida-hero-slider { min-height: 450px; }
+        .ozgida-hero-slider { aspect-ratio: 1 / 1; } /* Tablet ve mobilde 1:1 (kare) */
         .ozgida-slide-title { font-size: 2rem; margin-bottom: 1rem; }
         .ozgida-slide-desc { font-size: 1rem; margin-bottom: 1.5rem; }
         .ozgida-slide-btn { padding: 1rem 2rem; font-size: 1rem; }
@@ -220,7 +233,7 @@
     }
 
     @media (max-width: 576px) {
-        .ozgida-hero-slider { min-height: 400px; }
+        .ozgida-hero-slider { aspect-ratio: 1 / 1; } /* Mobilde 1:1 (1080x1080) */
         .ozgida-slide-title { font-size: 1.5rem; }
         .ozgida-slide-desc { font-size: 0.875rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .ozgida-slide-btn { padding: 0.875rem 1.75rem; font-size: 0.9375rem; gap: 0.5rem; }
@@ -232,7 +245,7 @@
     }
 
     @media (max-width: 400px) {
-        .ozgida-hero-slider { min-height: 350px; }
+        .ozgida-hero-slider { aspect-ratio: 1 / 1; } /* Küçük mobilde 1:1 */
         .ozgida-slide-title { font-size: 1.25rem; }
         .ozgida-slide-desc { display: none; }
         .ozgida-slide-btn { padding: 0.75rem 1.5rem; font-size: 0.875rem; }
@@ -259,11 +272,43 @@
                 $title = stripslashes($banner["baslik"]);
                 $desc = !empty($banner["aciklama"]) ? stripslashes($banner["aciklama"]) : "";
                 $btnText = !empty($banner["butontext"]) ? stripslashes($banner["butontext"]) : "Alışverişe Başla";
-                $link = !empty($banner["link"]) ? $banner["link"] : SITE . "urunler";
-                $image = SITE . "images/banner/" . $banner["resim"];
+                $url = !empty($banner["url"]) ? $banner["url"] : SITE . "urunler";
+
+                // Media type (image or video)
+                $mediaType = !empty($banner["media_type"]) ? $banner["media_type"] : "image";
+                $isVideo = ($mediaType === "video");
+
+                // Desktop image
+                $imageDesktop = SITE . "images/banner/" . $banner["resim"];
+
+                // Mobile image (if exists, otherwise use desktop)
+                $imageMobile = !empty($banner["resim_mobil"])
+                    ? SITE . "images/banner/" . $banner["resim_mobil"]
+                    : $imageDesktop;
+
+                // Tablet image (use mobile if exists, otherwise desktop)
+                $imageTablet = $imageMobile;
+
+                // Video settings
+                $videoUrl = !empty($banner["video_url"]) ? $banner["video_url"] : "";
+                $videoPoster = !empty($banner["video_poster"]) ? SITE . "images/banner/" . $banner["video_poster"] : $imageDesktop;
                 ?>
                 <div class="ozgida-slide <?=$isActive?>" data-slide="<?=$index?>">
-                    <img src="<?=$image?>" alt="<?=$title?>" class="ozgida-slide-bg" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
+                    <?php if($isVideo && !empty($videoUrl)): ?>
+                        <!-- Video Background -->
+                        <video class="ozgida-slide-bg ozgida-video-bg" autoplay muted loop playsinline poster="<?=$videoPoster?>">
+                            <source src="<?=$videoUrl?>" type="video/mp4">
+                            <!-- Fallback to image if video not supported -->
+                            <img src="<?=$imageDesktop?>" alt="<?=$title?>" class="ozgida-slide-bg">
+                        </video>
+                    <?php else: ?>
+                        <!-- Image Background (Responsive) -->
+                        <picture>
+                            <source media="(max-width: 576px)" srcset="<?=$imageMobile?>" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
+                            <source media="(max-width: 992px)" srcset="<?=$imageTablet?>" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
+                            <img src="<?=$imageDesktop?>" alt="<?=$title?>" class="ozgida-slide-bg" loading="<?=$index === 0 ? 'eager' : 'lazy'?>">
+                        </picture>
+                    <?php endif; ?>
 
                     <div class="ozgida-slide-content">
                         <div class="container">
@@ -272,10 +317,12 @@
                                 <?php if(!empty($desc)): ?>
                                     <p class="ozgida-slide-desc"><?=$desc?></p>
                                 <?php endif; ?>
-                                <a href="<?=$link?>" class="ozgida-slide-btn">
+                                <?php if(!empty($banner["url"])): ?>
+                                <a href="<?=$url?>" class="ozgida-slide-btn">
                                     <?=$btnText?>
                                     <i class="fas fa-arrow-right"></i>
                                 </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -539,16 +586,16 @@
                 <div class="col-lg-6 col-xl-7">
                     <div class="video-box">
                         <img src="assets/img/video/video-1-1.jpg" alt="Video image">
-                        <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video"><i class="fas fa-play"></i></a>
+                        <a href="assets/video/hero-video.mp4" class="play-btn style2 popup-video"><i class="fas fa-play"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-xl-5">
                     <div class="banner-style2" data-bg-src="assets/img/shape/banner-0749.jpg">
                         <div class="banner-shape"></div>
-                        <div class="banner-logo">
-                            <img src="assets/img/banner/img-7984.png" alt="Kampanya">
+                        <div class="banner-logo" style="height: % 10px;">
+                            <img src="assets/img/logo.png" alt="Kampanya">
                         </div>
-                        <h2 class="banner-title">%70'e Varan İndirim</h2>
+                        <h2 class="banner-title">%70'e <br> Varan İndirİm</h2>
                         <p class="banner-text">Tüm Doğal Gıda Ürünlerinde Geçerli</p>
                         <a href="<?=SITE?>urunler" class="vs-btn style5">Alışverişe Başla<i class="far fa-angle-right"></i></a>
                     </div>
@@ -1045,7 +1092,7 @@
                             $textClass = "";
                         }
                 ?>
-                <div class="col-lg-4">
+             <!--   <div class="col-lg-4">
                     <div class="<?=$cssClass?>" <?=$bgImage?>>
                         <div class="cat-body">
                             <h3 class="cat-title <?=$textClass?>"><?=stripslashes($kategoriler[$i]["baslik"])?></h3>
@@ -1056,7 +1103,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <?php
                         $catIndex++;
                     }
@@ -1106,6 +1153,7 @@
     <!--==============================
     Testimonial Area
     ==============================-->
+    <br><br><br>
     <section class=" space-top">
         <div class="shape-mockup jump d-none d-md-none" data-bottom="14%" data-left="41.5%"><img src="assets/img/shape/shape-5656.png" alt="shape"></div>
         <div class="container">
@@ -1288,6 +1336,7 @@
             </div>
         </div>
     </section>
+
     <!--==============================
         Blog Area
     ==============================-->
@@ -1305,7 +1354,7 @@
                 if($bloglar != false && count($bloglar) > 0) {
                     for($i = 0; $i < count($bloglar); $i++) {
                         // Blog resmi kontrolü
-                        $blogResim = !empty($bloglar[$i]["resim"]) ? "images/blog/".$bloglar[$i]["resim"] : "assets/img/blog/blog-5-".($i+1).".jpg";
+                        $blogResim = !empty($bloglar[$i]["resim"]) ? "images/bloglar/".$bloglar[$i]["resim"] : "assets/img/blog/blog-5-".($i+1).".jpg";
 
                         // Blog başlığını kısalt (50 karakter)
                         $baslik = stripslashes($bloglar[$i]["baslik"]);
@@ -1321,7 +1370,7 @@
 
                         // SEF link oluştur
                         $sefLink = !empty($bloglar[$i]["seflink"]) ? $bloglar[$i]["seflink"] : "blog-detay-".$bloglar[$i]["ID"];
-                        $blogUrl = SITE."blog/".$sefLink;
+                        $blogUrl = SITE."blog-detay/".$sefLink;
 
                         // Tarih formatla
                         $tarih = !empty($bloglar[$i]["tarih"]) ? date("d M Y", strtotime($bloglar[$i]["tarih"])) : date("d M Y");
@@ -1333,7 +1382,7 @@
                         </div>
                         <div class="blog-content">
                             <div class="blog-avater">
-                                <img src="assets/img/blog/blog-auth-1-1.jpg" alt="Yazar">
+                                <img src="assets/img/logo.png" alt="Yazar">
                             </div>
                             <a href="<?=$blogUrl?>" class="blog-date"><?=$tarih?></a>
                             <div class="blog-meta">

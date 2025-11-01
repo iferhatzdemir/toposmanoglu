@@ -19,7 +19,12 @@
       "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE topwebsite; SELECT ID, baslik, tablo, seflink FROM kategoriler WHERE durum=1 ORDER BY ID ASC LIMIT 10;\")",
       "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE topwebsite; SELECT ID, baslik, kategori, seflink, durum FROM urunler ORDER BY ID ASC LIMIT 10;\")",
       "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE top; SELECT ID, baslik, tablo, seflink FROM kategoriler WHERE durum=1 ORDER BY ID ASC LIMIT 10;\")",
-      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE top; SELECT ID, baslik, kategori, seflink, durum FROM urunler ORDER BY ID ASC LIMIT 10;\")"
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE top; SELECT ID, baslik, kategori, seflink, durum FROM urunler ORDER BY ID ASC LIMIT 10;\")",
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE topwebsite; DESCRIBE banner;\")",
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE top; DESCRIBE banner;\")",
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\":*)",
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE top; ALTER TABLE banner ADD COLUMN butontext VARCHAR(255) NULL AFTER aciklama;\")",
+      "Bash(\"/c/xampp/mysql/bin/mysql.exe\" -u root -e \"USE top; SHOW COLUMNS FROM banner;\")"
     ],
     "deny": [],
     "ask": []

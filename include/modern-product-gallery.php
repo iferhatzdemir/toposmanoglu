@@ -24,21 +24,29 @@ if ($resimler !== false) {
 ?>
 
 <style>
-/* Modern Product Gallery Styles */
+/* Modern Product Gallery Styles - fixed spacing between main image and thumbnails */
 .modern-gallery {
     position: relative;
     width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
 }
 
 .modern-gallery__main {
     position: relative;
     width: 100%;
-    aspect-ratio: 1;
+    height: 0;
+    padding-bottom: 100%;
     background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);
     border-radius: 16px;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin: 0 !important;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    display: block;
+    line-height: 0;
+    font-size: 0;
 }
 
 .modern-gallery__image {
@@ -126,15 +134,25 @@ if ($resimler !== false) {
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-/* Thumbnails Grid */
+/* Thumbnails Grid - fixed spacing between main image and thumbnails */
 .modern-gallery__thumbs {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 12px;
+    gap: 6px;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    width: 100%;
+    line-height: 0;
+    font-size: 0;
 }
 
 .modern-gallery__thumb {
     aspect-ratio: 1;
+    width: 100%;
+    height: auto;
+    min-height: unset;
     border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
@@ -142,6 +160,8 @@ if ($resimler !== false) {
     transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     background: #f5f5f5;
+    margin: 0;
+    padding: 0;
 }
 
 .modern-gallery__thumb::after {
@@ -169,6 +189,9 @@ if ($resimler !== false) {
     object-fit: cover;
     display: block;
     transition: transform 300ms ease;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
 }
 
 .modern-gallery__thumb:hover .modern-gallery__thumb-image {
@@ -248,17 +271,28 @@ if ($resimler !== false) {
     color: white;
 }
 
-/* Mobile Responsive */
+/* Mobile Responsive - fixed spacing between main image and thumbnails */
 @media (max-width: 768px) {
     .modern-gallery__main {
         border-radius: 12px;
-        margin-bottom: 16px;
+        margin: 0 !important;
+        padding-bottom: 100%;
     }
 
     .modern-gallery__thumbs {
         grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-        gap: 10px;
+        gap: 5px;
+        margin: 0 !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+        padding-top: 0 !important;
     }
+
+    .modern-gallery__thumb {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
 
     .modern-gallery__nav {
         width: 44px;
