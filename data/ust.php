@@ -67,10 +67,14 @@
     --gray-50: #fafafa;
 
     /* Spacing (8px base) */
-    --space-1: 0.5rem;   /* 8px */
-    --space-2: 1rem;     /* 16px */
-    --space-3: 1.5rem;   /* 24px */
-    --space-4: 2rem;     /* 32px */
+    --space-1: 0.5rem;
+    /* 8px */
+    --space-2: 1rem;
+    /* 16px */
+    --space-3: 1.5rem;
+    /* 24px */
+    --space-4: 2rem;
+    /* 32px */
 
     /* Transitions */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -155,21 +159,22 @@
 }
 
 .ecom-header__inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     height: 80px;
     gap: var(--space-3);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   LEFT SECTION: Hamburger (mobile) + Logo
+   LEFT SECTION: Hamburger (mobile) + Navigation
 ════════════════════════════════════════════════════════════ */
 
 .ecom-header__left {
     display: flex;
     align-items: center;
     gap: var(--space-2);
+    justify-content: flex-start;
 }
 
 /* Hamburger (Mobile Only) */
@@ -222,9 +227,15 @@
     transform: rotate(-45deg);
 }
 
-/* Logo */
+/* ═══════════════════════════════════════════════════════════
+   CENTER SECTION: Logo (Centered)
+════════════════════════════════════════════════════════════ */
+
 .ecom-logo {
     flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .ecom-logo__link {
@@ -240,13 +251,12 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   CENTER SECTION: Navigation (Desktop Only)
+   NAVIGATION: Desktop Navigation (Hidden in grid, shown separately)
 ════════════════════════════════════════════════════════════ */
 
 .ecom-nav {
-    flex: 1;
-    display: flex;
-    justify-content: center;
+    display: none;
+    /* Will be shown separately below header */
 }
 
 .ecom-nav__list {
@@ -884,9 +894,10 @@
 ════════════════════════════════════════════════════════════ */
 
 @media (max-width: 991px) {
-    /* Show hamburger */
+
+    /* Hide hamburger - zaten bottom nav'da var */
     .ecom-hamburger {
-        display: block !important;
+        display: none !important;
     }
 
     /* Hide desktop nav */
@@ -899,9 +910,28 @@
         display: none !important;
     }
 
+    /* Hide right section (icons) - zaten bottom nav'da var */
+    .ecom-header__right {
+        display: none !important;
+    }
+
     /* Adjust header height */
     .ecom-header__inner {
         height: 70px;
+        display: flex !important;
+        justify-content: center !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Logo ortada - tek başına */
+    .ecom-header__left {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .ecom-logo {
+        width: 100%;
+        text-align: center;
     }
 
     .ecom-logo__img {
@@ -913,22 +943,6 @@
     /* Hide category bar on mobile */
     .ecom-categorybar {
         display: none !important;
-    }
-
-    /* Hide text on icon buttons */
-    .ecom-icon-btn span {
-        display: none;
-    }
-
-    /* Smaller gaps */
-    .ecom-header__right {
-        gap: 0;
-    }
-
-    /* Ensure hamburger is clickable */
-    .ecom-hamburger {
-        pointer-events: auto;
-        touch-action: manipulation;
     }
 }
 
@@ -1061,11 +1075,7 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
 
             <!-- LEFT: Hamburger + Logo -->
             <div class="ecom-header__left">
-                <button
-                    class="ecom-hamburger"
-                    aria-label="Menüyü aç"
-                    aria-expanded="false"
-                    aria-controls="mobile-nav"
+                <button class="ecom-hamburger" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobile-nav"
                     id="hamburger-btn">
                     <span class="ecom-hamburger__line"></span>
                     <span class="ecom-hamburger__line"></span>
@@ -1074,12 +1084,8 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
 
                 <div class="ecom-logo">
                     <a href="<?= safe(SITE) ?>" class="ecom-logo__link" aria-label="Ana sayfa">
-                        <img
-                            src="<?= safe(SITE) ?>assets/img/logo.png"
-                            alt="Toposmanoğlu"
-                            class="ecom-logo__img"
-                            width="120"
-                            height="45">
+                        <img src="<?= safe(SITE) ?>assets/img/logo.png" alt="Toposmanoğlu" class="ecom-logo__img"
+                            width="120" height="45">
                     </a>
                 </div>
             </div>
@@ -1088,21 +1094,21 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
             <nav class="ecom-nav" aria-label="Ana menü">
                 <ul class="ecom-nav__list">
                     <li class="ecom-nav__item">
-                        <a href="<?= safe(SITE) ?>" class="ecom-nav__link <?= $current_uri === '/' ? 'ecom-nav__link--active' : '' ?>">
+                        <a href="<?= safe(SITE) ?>"
+                            class="ecom-nav__link <?= $current_uri === '/' ? 'ecom-nav__link--active' : '' ?>">
                             Anasayfa
                         </a>
                     </li>
 
                     <!-- Kurumsal Dropdown -->
                     <li class="ecom-nav__item">
-                        <button
-                            class="ecom-nav__button"
-                            aria-expanded="false"
-                            aria-controls="kurumsal-dropdown"
+                        <button class="ecom-nav__button" aria-expanded="false" aria-controls="kurumsal-dropdown"
                             id="kurumsal-btn">
                             Kurumsal
                             <svg class="ecom-nav__icon" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
                             </svg>
                         </button>
                         <div class="ecom-dropdown" id="kurumsal-dropdown" aria-hidden="true">
@@ -1124,14 +1130,13 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
 
                     <!-- Gizlilik Dropdown -->
                     <li class="ecom-nav__item">
-                        <button
-                            class="ecom-nav__button"
-                            aria-expanded="false"
-                            aria-controls="gizlilik-dropdown"
+                        <button class="ecom-nav__button" aria-expanded="false" aria-controls="gizlilik-dropdown"
                             id="gizlilik-btn">
                             Gizlilik
                             <svg class="ecom-nav__icon" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
                             </svg>
                         </button>
                         <div class="ecom-dropdown" id="gizlilik-dropdown" aria-hidden="true">
@@ -1167,15 +1172,13 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
                 <!-- Desktop Search -->
                 <div class="ecom-search">
                     <form action="<?= safe(SITE) ?>arama" method="GET">
-                        <input
-                            type="text"
-                            name="search"
-                            class="ecom-search__input"
-                            placeholder="Ürün, kategori veya marka ara..."
-                            aria-label="Arama">
+                        <input type="text" name="search" class="ecom-search__input"
+                            placeholder="Ürün, kategori veya marka ara..." aria-label="Arama">
                         <button type="submit" class="ecom-search__button" aria-label="Ara">
                             <svg class="ecom-search__icon" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd"
+                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                    clip-rule="evenodd" />
                             </svg>
                         </button>
                     </form>
@@ -1186,51 +1189,53 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
                     <!-- Wishlist -->
                     <a href="<?= safe(SITE) ?>favorilerim" class="ecom-icon-btn" aria-label="Favorilerim">
                         <svg fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd"
+                                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                clip-rule="evenodd" />
                         </svg>
                     </a>
 
                     <!-- Cart -->
                     <a href="<?= safe(SITE) ?>sepet" class="ecom-icon-btn" aria-label="Sepet (<?= $cart_count ?> ürün)">
                         <svg fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                            <path
+                                d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
                         </svg>
                         <?php if ($cart_count > 0): ?>
-                            <span class="ecom-badge"><?= $cart_count ?></span>
+                        <span class="ecom-badge"><?= $cart_count ?></span>
                         <?php endif; ?>
                     </a>
 
                     <!-- Account -->
-                    <button
-                        class="ecom-icon-btn"
-                        aria-label="Hesabım"
-                        aria-expanded="false"
-                        aria-controls="account-dropdown"
-                        id="account-btn">
+                    <button class="ecom-icon-btn" aria-label="Hesabım" aria-expanded="false"
+                        aria-controls="account-dropdown" id="account-btn">
                         <svg fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                clip-rule="evenodd" />
                         </svg>
                     </button>
 
                     <!-- Account Dropdown -->
                     <div class="ecom-account-dropdown" id="account-dropdown" aria-hidden="true">
                         <?php if ($user_logged_in): ?>
-                            <div class="ecom-account-dropdown__header">
-                                <div class="ecom-account-dropdown__welcome">
-                                    Hoşgeldiniz, <?= safe($user_name) ?>
-                                </div>
+                        <div class="ecom-account-dropdown__header">
+                            <div class="ecom-account-dropdown__welcome">
+                                Hoşgeldiniz, <?= safe($user_name) ?>
                             </div>
+                        </div>
                         <?php else: ?>
-                            <a href="<?= safe(SITE) ?>uyelik" class="ecom-btn-primary">Giriş Yap / Üye Ol</a>
-                            <div style="height: 12px;"></div>
+                        <a href="<?= safe(SITE) ?>uyelik" class="ecom-btn-primary">Giriş Yap / Üye Ol</a>
+                        <div style="height: 12px;"></div>
                         <?php endif; ?>
 
                         <ul class="ecom-account-dropdown__list">
                             <li class="ecom-account-dropdown__item">
                                 <a href="<?= safe(SITE) ?>siparis-takip" class="ecom-account-dropdown__link">
                                     <svg fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
-                                        <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"/>
+                                        <path
+                                            d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                                        <path
+                                            d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
                                     </svg>
                                     Sipariş Takibi
                                 </a>
@@ -1240,7 +1245,8 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
                             <li class="ecom-account-dropdown__item">
                                 <a href="<?= safe(SITE) ?>siparislerim" class="ecom-account-dropdown__link">
                                     <svg fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3z"/>
+                                        <path
+                                            d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3z" />
                                     </svg>
                                     Siparişlerim
                                 </a>
@@ -1248,7 +1254,9 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
                             <li class="ecom-account-dropdown__item">
                                 <a href="<?= safe(SITE) ?>hesabim" class="ecom-account-dropdown__link">
                                     <svg fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd"
+                                            d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                            clip-rule="evenodd" />
                                     </svg>
                                     Hesabım
                                 </a>
@@ -1256,7 +1264,9 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
                             <li class="ecom-account-dropdown__item">
                                 <a href="<?= safe(SITE) ?>cikis-yap" class="ecom-account-dropdown__link">
                                     <svg fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd"
+                                            d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                                            clip-rule="evenodd" />
                                     </svg>
                                     Çıkış Yap
                                 </a>
@@ -1275,21 +1285,32 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
 <!-- Category Bar (Optional - Desktop Only) -->
 <div class="ecom-categorybar">
     <div class="ecom-categorybar__container">
-        <div class="ecom-categorybar__inner" style="position: relative;">
-            <button
-                class="ecom-category-btn"
-                aria-label="Kategoriler"
-                aria-expanded="false"
-                aria-controls="category-menu"
-                id="category-btn">
+        <div class="ecom-categorybar__inner" style="position: relative; display: flex; gap: 1rem;">
+            <button class="ecom-category-btn" aria-label="Kategoriler" aria-expanded="false"
+                aria-controls="category-menu" id="category-btn">
                 <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 16a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                    <path
+                        d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 16a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
                 </svg>
                 Tüm Kategoriler
             </button>
 
+
+
             <!-- Category Mega Menu -->
             <div class="ecom-category-menu" id="category-menu" aria-hidden="true">
+                <ul class="ecom-category-menu__list">
+                    <li class="ecom-category-menu__item">
+                        <a href="<?= safe(SITE) ?>urunler" class="ecom-category-btn"
+                            style="background: linear-gradient(135deg, var(--rose-600) 0%, var(--rose-500) 100%); text-decoration: none;">
+                            <svg fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 11a1 1 0 112 0 1 1 0 01-2 0zM9 15a1 1 0 112 0 1 1 0 01-2 0zM6.5 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM6.5 15a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM13.5 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM13.5 15a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                            </svg>
+                            Tüm Ürünler
+                        </a>
+                    </li>
+                </ul>
                 <ul class="ecom-category-menu__list">
                     <?php
                     $kategoriler = $VT->VeriGetir("kategoriler", "WHERE durum=? AND tablo=?", array(1, "urunler"), "ORDER BY sirano ASC");
@@ -1328,7 +1349,9 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
         <div class="ecom-mobile-nav__title">Menü</div>
         <button class="ecom-mobile-nav__close" aria-label="Menüyü kapat" id="mobile-close">
             <svg fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd" />
             </svg>
         </button>
     </div>
@@ -1338,16 +1361,20 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
             <a href="<?= safe(SITE) ?>" class="ecom-mobile-nav__link">Anasayfa</a>
         </li>
 
+        <!-- Tüm Ürünler -->
+        <li class="ecom-mobile-nav__item">
+            <a href="<?= safe(SITE) ?>urunler" class="ecom-mobile-nav__link">Tüm Ürünler</a>
+        </li>
+
         <!-- Kategoriler -->
         <li class="ecom-mobile-nav__item">
-            <button
-                class="ecom-mobile-nav__button"
-                aria-expanded="false"
-                aria-controls="mobile-kategoriler"
+            <button class="ecom-mobile-nav__button" aria-expanded="false" aria-controls="mobile-kategoriler"
                 id="mobile-kategoriler-btn">
                 <span>Kategoriler</span>
                 <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
                 </svg>
             </button>
             <div class="ecom-mobile-submenu" id="mobile-kategoriler" aria-hidden="true">
@@ -1368,14 +1395,13 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
 
         <!-- Kurumsal -->
         <li class="ecom-mobile-nav__item">
-            <button
-                class="ecom-mobile-nav__button"
-                aria-expanded="false"
-                aria-controls="mobile-kurumsal"
+            <button class="ecom-mobile-nav__button" aria-expanded="false" aria-controls="mobile-kurumsal"
                 id="mobile-kurumsal-btn">
                 <span>Kurumsal</span>
                 <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
                 </svg>
             </button>
             <div class="ecom-mobile-submenu" id="mobile-kurumsal" aria-hidden="true">
@@ -1396,14 +1422,13 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
 
         <!-- Gizlilik -->
         <li class="ecom-mobile-nav__item">
-            <button
-                class="ecom-mobile-nav__button"
-                aria-expanded="false"
-                aria-controls="mobile-gizlilik"
+            <button class="ecom-mobile-nav__button" aria-expanded="false" aria-controls="mobile-gizlilik"
                 id="mobile-gizlilik-btn">
                 <span>Gizlilik</span>
                 <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
                 </svg>
             </button>
             <div class="ecom-mobile-submenu" id="mobile-gizlilik" aria-hidden="true">
@@ -1434,15 +1459,13 @@ $user_name = $_SESSION["uyeAdi"] ?? '';
     <!-- Mobile Search -->
     <div class="ecom-mobile-search">
         <form action="<?= safe(SITE) ?>arama" method="GET" class="ecom-mobile-search__form">
-            <input
-                type="text"
-                name="search"
-                class="ecom-mobile-search__input"
-                placeholder="Ürün ara..."
+            <input type="text" name="search" class="ecom-mobile-search__input" placeholder="Ürün ara..."
                 aria-label="Arama">
             <button type="submit" class="ecom-mobile-search__button" aria-label="Ara">
                 <svg fill="currentColor" viewBox="0 0 20 20" style="width: 20px; height: 20px;">
-                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clip-rule="evenodd" />
                 </svg>
             </button>
         </form>
@@ -1505,9 +1528,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 overlay.removeAttribute('aria-hidden');
 
                 // Force with inline styles - TRANSITION OVERRIDE
-                mobileNav.style.cssText = 'position: fixed !important; top: 0 !important; left: 0 !important; width: 300px !important; height: 100vh !important; background: white !important; z-index: 9999 !important; display: block !important; visibility: visible !important; opacity: 1 !important; transform: translateX(0) !important; transition: transform 300ms ease-in-out !important;';
+                mobileNav.style.cssText =
+                    'position: fixed !important; top: 0 !important; left: 0 !important; width: 300px !important; height: 100vh !important; background: white !important; z-index: 9999 !important; display: block !important; visibility: visible !important; opacity: 1 !important; transform: translateX(0) !important; transition: transform 300ms ease-in-out !important;';
 
-                overlay.style.cssText = 'position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.5) !important; z-index: 9998 !important; display: block !important; visibility: visible !important; opacity: 1 !important; transition: opacity 300ms ease-in-out !important;';
+                overlay.style.cssText =
+                    'position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.5) !important; z-index: 9998 !important; display: block !important; visibility: visible !important; opacity: 1 !important; transition: opacity 300ms ease-in-out !important;';
 
                 document.body.style.overflow = 'hidden';
 
@@ -1536,8 +1561,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 300);
 
                 // Force with inline styles - KAPATMA
-                mobileNav.style.cssText = 'position: fixed !important; top: 0 !important; left: -100% !important; width: 300px !important; height: 100vh !important; transition: left 300ms ease-in-out !important;';
-                overlay.style.cssText = 'opacity: 0 !important; visibility: hidden !important; transition: opacity 300ms ease-in-out !important;';
+                mobileNav.style.cssText =
+                    'position: fixed !important; top: 0 !important; left: -100% !important; width: 300px !important; height: 100vh !important; transition: left 300ms ease-in-out !important;';
+                overlay.style.cssText =
+                    'opacity: 0 !important; visibility: hidden !important; transition: opacity 300ms ease-in-out !important;';
 
                 // Remove focus from mobile menu elements
                 setTimeout(() => hamburger.blur(), 100);
@@ -1552,8 +1579,10 @@ document.addEventListener('DOMContentLoaded', function() {
             hamburger.setAttribute('aria-expanded', 'false');
 
             // Force with inline styles - KAPATMA
-            mobileNav.style.cssText = 'position: fixed !important; top: 0 !important; left: -100% !important; width: 300px !important; height: 100vh !important; transition: left 300ms ease-in-out !important;';
-            overlay.style.cssText = 'opacity: 0 !important; visibility: hidden !important; transition: opacity 300ms ease-in-out !important;';
+            mobileNav.style.cssText =
+                'position: fixed !important; top: 0 !important; left: -100% !important; width: 300px !important; height: 100vh !important; transition: left 300ms ease-in-out !important;';
+            overlay.style.cssText =
+                'opacity: 0 !important; visibility: hidden !important; transition: opacity 300ms ease-in-out !important;';
 
             // Set aria-hidden AFTER closing animation
             setTimeout(() => {
@@ -1601,8 +1630,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.stopPropagation();
 
                 console.log('Mobile dropdown clicked:', id);
-                console.log('Before toggle - aria-expanded:', btn.getAttribute('aria-expanded'));
-                console.log('Before toggle - aria-hidden:', submenu.getAttribute('aria-hidden'));
+                console.log('Before toggle - aria-expanded:', btn.getAttribute(
+                'aria-expanded'));
+                console.log('Before toggle - aria-hidden:', submenu.getAttribute(
+                'aria-hidden'));
 
                 toggleElement(btn, submenu);
 
@@ -1632,5 +1663,205 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     console.log('✅ E-commerce Header v3.0 - Professional & Clean');
+});
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BOTTOM NAVIGATION BAR (Fixed Mobile Navigation)
+════════════════════════════════════════════════════════════ -->
+<style>
+/* Bottom Navigation - Sabit Alt Bar */
+.ecom-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 70px;
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    display: none;
+    /* Sadece mobilde göster */
+    padding-bottom: env(safe-area-inset-bottom);
+    /* iPhone notch desteği */
+}
+
+.ecom-bottom-nav__container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--space-1);
+}
+
+.ecom-bottom-nav__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--gray-600);
+    transition: all var(--transition-fast);
+    padding: var(--space-1);
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.ecom-bottom-nav__item:active {
+    background: var(--green-50);
+    transform: scale(0.95);
+}
+
+.ecom-bottom-nav__item.active {
+    color: var(--green-600);
+}
+
+.ecom-bottom-nav__icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.ecom-bottom-nav__icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.ecom-bottom-nav__label {
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Badge için bottom nav versiyonu */
+.ecom-bottom-nav__badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    background: var(--rose-600);
+    color: var(--white);
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    line-height: 1;
+    box-shadow: 0 2px 4px rgba(201, 138, 143, 0.3);
+}
+
+/* Mobile body padding - bottom nav için alan aç */
+@media (max-width: 991px) {
+    .ecom-bottom-nav {
+        display: block;
+    }
+
+    /* Ana içeriğe bottom padding ekle */
+    body {
+        padding-bottom: 70px;
+    }
+}
+
+/* iPhone X ve üzeri için safe area */
+@supports (padding: max(0px)) {
+    @media (max-width: 991px) {
+        .ecom-bottom-nav {
+            height: calc(70px + env(safe-area-inset-bottom));
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        body {
+            padding-bottom: calc(70px + env(safe-area-inset-bottom));
+        }
+    }
+}
+</style>
+
+<!-- Bottom Navigation HTML -->
+<nav class="ecom-bottom-nav" aria-label="Ana navigasyon">
+    <div class="ecom-bottom-nav__container">
+        <!-- Menu -->
+        <button class="ecom-bottom-nav__item" id="bottom-menu-btn" aria-label="Menü" title="Menü">
+            <span class="ecom-bottom-nav__icon">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                        clip-rule="evenodd" />
+                </svg>
+            </span>
+            <span class="ecom-bottom-nav__label">Menü</span>
+        </button>
+
+        <!-- Wishlist -->
+        <a href="<?= safe(SITE) ?>favorilerim" class="ecom-bottom-nav__item" aria-label="Favorilerim"
+            title="Favorilerim">
+            <span class="ecom-bottom-nav__icon">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                        clip-rule="evenodd" />
+                </svg>
+            </span>
+            <span class="ecom-bottom-nav__label">Favoriler</span>
+        </a>
+
+        <!-- Cart -->
+        <a href="<?= safe(SITE) ?>sepet" class="ecom-bottom-nav__item" aria-label="Sepet" title="Sepet">
+            <span class="ecom-bottom-nav__icon">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                </svg>
+                <?php if ($cart_count > 0): ?>
+                <span class="ecom-bottom-nav__badge"><?= $cart_count ?></span>
+                <?php endif; ?>
+            </span>
+            <span class="ecom-bottom-nav__label">Sepet</span>
+        </a>
+
+        <!-- Account -->
+        <a href="<?= safe(SITE) ?><?= $user_logged_in ? 'hesabim' : 'uyelik' ?>" class="ecom-bottom-nav__item"
+            aria-label="<?= $user_logged_in ? 'Hesabım' : 'Giriş Yap' ?>"
+            title="<?= $user_logged_in ? 'Hesabım' : 'Giriş Yap' ?>">
+            <span class="ecom-bottom-nav__icon">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clip-rule="evenodd" />
+                </svg>
+            </span>
+            <span class="ecom-bottom-nav__label"><?= $user_logged_in ? 'Hesap' : 'Giriş' ?></span>
+        </a>
+    </div>
+</nav>
+
+<script>
+// Bottom Navigation - Menu button functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const bottomMenuBtn = document.getElementById('bottom-menu-btn');
+    const hamburger = document.getElementById('hamburger-btn');
+
+    if (bottomMenuBtn && hamburger) {
+        bottomMenuBtn.addEventListener('click', function() {
+            // Hamburger menüyü tetikle
+            hamburger.click();
+        });
+    }
+
+    console.log('✅ Bottom Navigation Initialized');
 });
 </script>

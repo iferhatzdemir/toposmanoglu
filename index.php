@@ -130,6 +130,31 @@ include_once(SAYFA."seo.php");
 	include_once(DATA."footer.php");
 	?>
 
+    <!--==============================
+        Intro Video Modal
+    ============================== -->
+    <div id="introVideoModal" class="video-modal" aria-hidden="true">
+        <div class="video-modal__overlay" data-video-modal-close></div>
+        <div class="video-modal__content" role="dialog" aria-modal="true" aria-label="Özgıda Toposmanoğlu Tanıtım Videosu">
+            <button class="video-modal__close" type="button" data-video-modal-close aria-label="Videoyu kapat">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="video-modal__headline">
+                <span class="video-modal__eyebrow">Özgıda Toposmanoğlu'na Hoş Geldiniz</span>
+                <h3 class="video-modal__title">Doğal Lezzetleri Keşfedin</h3>
+            </div>
+            <div class="video-modal__body">
+                <div class="video-modal__media">
+                    <video id="introVideo" width="100%" height="100%" controls autoplay muted playsinline>
+                        <source src="<?=SITE?>assets/video/hero-video.mp4" type="video/mp4">
+                        Tarayıcınız video etiketini desteklemiyor.
+                    </video>
+                </div>
+                <p class="video-modal__description">Isparta'nın bereketli topraklarından gelen doğal ürünlerimizi ve üretim sürecimizi tanıtım videomuzla keşfedin. Çiftlikten sofraya uzanan hikâyemize ortak olun.</p>
+            </div>
+        </div>
+    </div>
+
     <!--********************************
 			Code End  Here
 	******************************** -->

@@ -1,7 +1,14 @@
 <style>
+  /* Dashboard Wrapper - Container */
+  .admin-dashboard-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
   .dashboard-modern {
     background: #f5f7fa;
-    padding: 30px;
+    padding: 30px 0;
     min-height: calc(100vh - 100px);
   }
 
@@ -242,6 +249,7 @@
 </style>
 
 <div class="dashboard-modern">
+  <div class="admin-dashboard-wrapper">
   <?php
   // Visitor statistics
   $buguntekil = 0;
@@ -340,6 +348,7 @@
         <canvas id="donutChart"></canvas>
       </div>
     </div>
+  </div>
   </div>
 </div>
 

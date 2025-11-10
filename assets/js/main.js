@@ -23,12 +23,13 @@
     var delay = forceOpen ? 0 : 400;
 
     setTimeout(function () {
-      var $iframe = $introVideoModal.find('iframe');
-      var targetSrc = $iframe.data('src');
-      var currentSrc = $iframe.attr('src');
-
-      if (targetSrc && currentSrc !== targetSrc) {
-        $iframe.attr('src', targetSrc);
+      // Video element kontrolü (iframe yerine)
+      var $video = $introVideoModal.find('video');
+      if ($video.length) {
+        // Video varsa oynat
+        $video[0].play().catch(function(error) {
+          console.log('Video autoplay engellendi:', error);
+        });
       }
 
       $('body').addClass('video-modal-open');
@@ -51,12 +52,12 @@
     $introVideoModal.removeClass('is-visible').attr('aria-hidden', 'true');
     $('body').removeClass('video-modal-open');
 
-    var $iframe = $introVideoModal.find('iframe');
-    if ($iframe.length) {
-      var activeSrc = $iframe.attr('src');
-      if (activeSrc) {
-        $iframe.attr('src', '');
-      }
+    // Video element kontrolü (iframe yerine)
+    var $video = $introVideoModal.find('video');
+    if ($video.length) {
+      // Videoyu durdur ve başa sar
+      $video[0].pause();
+      $video[0].currentTime = 0;
     }
   }
 

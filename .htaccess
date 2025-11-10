@@ -2,6 +2,7 @@ Options -indexes
 RewriteEngine On
 RewriteBase /topwebsite/
 RewriteRule ^anasayfa$ index.php [NC]
+RewriteRule ^urunler$ index.php?sayfa=urunler [QSA,NC]
 RewriteRule ^kategori/(.*)$ index.php?sayfa=kategoriler&seflink=$1 [QSA]
 RewriteRule ^blog-detay/(.*)$ index.php?sayfa=blog-detay&seflink=$1 [NC]
 RewriteRule ^urun/(.*)$ index.php?sayfa=urun-detay&seflink=$1 [NC]

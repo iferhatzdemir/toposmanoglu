@@ -512,6 +512,8 @@
       About Us Area
     ==============================-->
     <section class="sec-bg10  space-top space-md-bottom" data-bg-src="assets/img/bg/bg-1.png">
+        <div class="shape-mockup jump d-none d-xl-block" data-left="1%" data-top="5%" style="z-index: 1;"><img src="assets/img/shape/leaf1.png" alt="leaf decoration" style="opacity: 0.45; max-width: 100px; width: 100%;"></div>
+        <div class="shape-mockup jump-reverse d-none d-xl-block" data-right="2%" data-top="8%" style="z-index: 1;"><img src="assets/img/shape/leaf2.png" alt="leaf decoration" style="opacity: 0.4; max-width: 90px; width: 100%;"></div>
         <div class="container">
             <div class="row align-items-center flex-row-reverse">
                 <div class="col-lg-6">
@@ -541,6 +543,7 @@
     Categories Area
     ==============================-->
     <section class=" space-md-bottom" data-bg-src="assets/img/shape/cat-bg-656.png">
+        <div class="shape-mockup jump-reverse d-none d-xl-block" data-left="3%" data-bottom="10%" style="z-index: 1;"><img src="assets/img/shape/leaf3.png" alt="leaf decoration" style="opacity: 0.35; max-width: 85px; width: 100%;"></div>
         <div class="container">
             <div class="section-title text-center">
                 <div class="sec-icon"><img src="assets/img/icons/sec-icon-2.png" alt="icon"></div>
@@ -557,8 +560,17 @@
                         $urunSayisi = $VT->VeriGetir("urunler", "WHERE kategori=? AND durum=?", array($kategoriler[$i]["ID"], 1), "");
                         $urunSayisiText = ($urunSayisi != false) ? count($urunSayisi) : 0;
 
-                        // Resim yolu - eğer resim varsa kullan, yoksa varsayılan resim kullan
-                        $resimYolu = !empty($kategoriler[$i]["resim"]) ? "assets/img/icons/".$kategoriler[$i]["resim"] : "assets/img/icons/cat-icon-1-".($i%5+1).".png";
+                        // Kategori adına göre resim eşleştirme (home-cat-image klasöründen)
+                        $kategoriSeflink = !empty($kategoriler[$i]["seflink"]) ? strtolower($kategoriler[$i]["seflink"]) : "";
+
+                        // Önce seflink'e göre resim ara
+                        $resimAdi = $kategoriSeflink . "-cat.png";
+                        $resimYolu = "images/home-cat-image/" . $resimAdi;
+
+                        // Eğer resim yoksa varsayılan resim kullan
+                        if(!file_exists($resimYolu)) {
+                            $resimYolu = "assets/img/icons/cat-icon-1-".($i%5+1).".png";
+                        }
                 ?>
                 <div class="col-auto cat-style1">
                     <div class="cat-body">
@@ -806,6 +818,8 @@
     Gallery
   ============================== -->
 <section class="space-md">
+    <div class="shape-mockup jump d-none d-xl-block" data-right="4%" data-top="8%" style="z-index: 1;"><img src="assets/img/shape/leaf4.png" alt="leaf decoration" style="opacity: 0.45; max-width: 80px; width: 100%;"></div>
+    <div class="shape-mockup jump-reverse d-none d-xl-block" data-left="3%" data-bottom="12%" style="z-index: 1;"><img src="assets/img/shape/leaf1.png" alt="leaf decoration" style="opacity: 0.38; max-width: 95px; width: 100%;"></div>
     <div class="container">
         <div class="row gx-70 align-items-center justify-content-center">
             <div class="col-lg-8 col-xl-6 text-center mb-30">
@@ -1341,6 +1355,8 @@
         Blog Area
     ==============================-->
     <section class="vs-blog-wrapper space">
+        <div class="shape-mockup jump d-none d-xl-block" data-left="2%" data-top="15%" style="z-index: 1;"><img src="assets/img/shape/leaf2.png" alt="leaf decoration" style="opacity: 0.42; max-width: 88px; width: 100%;"></div>
+        <div class="shape-mockup jump-reverse d-none d-xl-block" data-right="3%" data-bottom="10%" style="z-index: 1;"><img src="assets/img/shape/leaf3.png" alt="leaf decoration" style="opacity: 0.48; max-width: 92px; width: 100%;"></div>
         <div class="section-title text-center">
             <div class="sec-icon"><img src="assets/img/icons/sec-icon-2.png" alt="icon"></div>
             <span class="sub-title4">Haberler & İpuçları</span>

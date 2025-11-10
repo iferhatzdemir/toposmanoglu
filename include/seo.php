@@ -195,6 +195,12 @@ if($_GET && !empty($_GET["sayfa"]))
 				$siteanahtar="arama, eticarette arama, arama yap, arama motoru, ".$siteanahtar;
 				break;
 
+			case "urunler":
+				$sitebaslik="Tum Urunler - ".$sitebaslik;
+				$sitedescription="Tum urunlerimizi inceleyin, filtreleyerek aradiginiz urune kolayca ulasin.";
+				$siteanahtar="tum urunler, urunler, urun listesi, e-ticaret urunler, vitrin, ".$siteanahtar;
+				break;
+
 			default:
 				/*N*/
 				break;
